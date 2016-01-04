@@ -1,5 +1,8 @@
 package com.mojang.minecraft.server;
 
+import com.infermc.hosecraft.events.PlayerJoinEvent;
+import com.infermc.hosecraft.server.Location;
+import com.infermc.hosecraft.server.Player;
 import com.mojang.minecraft.BlockTypes;
 import com.mojang.minecraft.level.Level;
 import com.mojang.minecraft.level.tile.Block;
@@ -36,6 +39,8 @@ public final class HandleClient {
    private volatile byte[] u = null;
    public boolean i = false;
 
+   // HoseCraft
+   public Player player;
 
    public HandleClient(MinecraftServer var1, NetworkManager var2, int var3) {
       this.k = var1;
@@ -91,6 +96,10 @@ public final class HandleClient {
             String var3 = ((String)var2[1]).trim();
             String var8 = (String)var2[2];
             char[] var4 = var3.toCharArray();
+
+            // Create the player.
+            this.player = new Player(this.k.HoseCraft,this,var3);
+            this.k.HoseCraft.players.add(this.player);
 
             for(int var5 = 0; var5 < var4.length; ++var5) {
                if(var4[var5] < 32 || var4[var5] > 127) {
@@ -164,6 +173,7 @@ public final class HandleClient {
    }
 
    public final void a(String var1) {
+      this.k.HoseCraft.players.remove(this.player);
       this.NetworkManager.a(PacketType.DISCONNECT, new Object[]{var1});
       j.info("Kicking " + this + ": " + var1);
       this.k.a(this);
@@ -229,10 +239,8 @@ public final class HandleClient {
                   var8 = var8 * var8 + var9 * var9 + var10 * var10;
                   var9 = 8.0F;
                   if(var8 >= var9 * var9) {
-                     System.out.println("Distance: " + NetworkManager.equals(var8));
-                     this.d("Distance");
-                  } else if(!BlockTypes.a.contains(Block.blocks[var6])) {
-                     this.d("Tile type");
+                      System.out.println("Distance: " + NetworkManager.equals(var8));
+                      this.d("Distance");
                   } else if(var13 >= 0 && var3 >= 0 && var4 >= 0 && var13 < var7.width && var3 < var7.depth && var4 < var7.height) {
                      if(var5 == 0) {
                         if(var7.getTile(var13, var3, var4) != Block.BEDROCK.id || this.k.g.c(this.b)) {
@@ -288,11 +296,16 @@ public final class HandleClient {
                         this.h = var5;
                         this.g = var6;
                         this.k.a(this, PacketType.ROTATION_UPDATE, new Object[]{Integer.valueOf(this.c), Byte.valueOf(var5), Byte.valueOf(var6)});
+                         this.player.getLocation().setYaw(var5);
+                         this.player.getLocation().setPitch(var6);
                      } else if(var5 == this.h && var6 == this.g) {
                         this.d = var13;
                         this.e = var3;
                         this.f = var4;
                         this.k.a(this, PacketType.POSITION_UPDATE, new Object[]{Integer.valueOf(this.c), Integer.valueOf(var22), Integer.valueOf(var23), Integer.valueOf(var24)});
+                         this.player.getLocation().setX(var22);
+                         this.player.getLocation().setY(var23);
+                         this.player.getLocation().setZ(var24);
                      } else {
                         this.d = var13;
                         this.e = var3;
@@ -333,8 +346,19 @@ public final class HandleClient {
 
          this.NetworkManager.a(PacketType.LEVEL_FINALIZE, new Object[]{Integer.valueOf(var11.width), Integer.valueOf(var11.depth), Integer.valueOf(var11.height)});
          this.NetworkManager.a(PacketType.SPAWN_PLAYER, new Object[]{Integer.valueOf(-1), this.b, Integer.valueOf(this.d), Integer.valueOf(this.e), Integer.valueOf(this.f), Integer.valueOf(this.h), Integer.valueOf(this.g)});
-         this.k.a(this, PacketType.SPAWN_PLAYER, new Object[]{Integer.valueOf(this.c), this.b, Integer.valueOf((var11.xSpawn << 5) + 16), Integer.valueOf((var11.ySpawn << 5) + 16), Integer.valueOf((var11.zSpawn << 5) + 16), Integer.valueOf((int)(var11.rotSpawn * 256.0F / 360.0F)), Integer.valueOf(0)});
-         this.k.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), this.b + " joined the game"});
+
+          Location spawnLoc = new Location(this.k.c,this.d, this.e, this.f, this.h, this.g);
+          this.player.teleport(spawnLoc);
+
+          this.k.a(this, PacketType.SPAWN_PLAYER, new Object[]{Integer.valueOf(this.c), this.b, Integer.valueOf((var11.xSpawn << 5) + 16), Integer.valueOf((var11.ySpawn << 5) + 16), Integer.valueOf((var11.zSpawn << 5) + 16), Integer.valueOf((int)(var11.rotSpawn * 256.0F / 360.0F)), Integer.valueOf(0)});
+
+
+
+          this.k.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), this.b + " joined the game"});
+
+         // When they actually spawn
+         PlayerJoinEvent ev = new PlayerJoinEvent(this.player);
+
          Iterator var20 = this.k.b().iterator();
 
          while(var20.hasNext()) {

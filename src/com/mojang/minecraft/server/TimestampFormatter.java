@@ -1,11 +1,10 @@
 package com.mojang.minecraft.server;
 
-import com.mojang.minecraft.server.MinecraftServer;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-final class TimestampFormatter extends Formatter {
+public final class TimestampFormatter extends Formatter {
 
    public final String format(LogRecord var1) {
       Level var3 = var1.getLevel();
