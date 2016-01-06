@@ -84,7 +84,6 @@ public class PluginClassLoader extends URLClassLoader {
     }
 
     public void initialize(JavaPlugin pl) {
-        System.out.println("Plugin asked to be initalized!");
         pl.init(this.name,this.server);
     }
 }

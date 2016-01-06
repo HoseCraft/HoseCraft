@@ -11,6 +11,9 @@ public interface Plugin {
     public File getDataFolder();
     public Logger getLogger();
     public Server getServer();
+    public void onLoad();
     public void onEnable();
     public void onDisable();
+    public boolean isEnabled();
+    public void setEnabled(boolean status);
 }

@@ -56,9 +56,8 @@ public class CommandRegistry {
         for (List<Command> list : commands.values()) {
             for (Command command : list) {
                 if (command.getName().equalsIgnoreCase(cmd)) {
-                    hit = true;
                     boolean res = command.runner(source, args);
-                    if (res) return;
+                    if (res) hit = true;
                 }
             }
         }
@@ -87,9 +86,9 @@ public class CommandRegistry {
         if (commands.containsKey(pl)) {
             for (Command command : commands.get(pl)) {
                 if (command.getName().equalsIgnoreCase(cmd)) {
-                    hit = true;
                     boolean res = command.runner(source, args);
                     if (res) return;
+                    hit = true;
                 }
             }
         }

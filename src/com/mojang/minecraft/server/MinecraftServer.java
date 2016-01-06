@@ -188,27 +188,21 @@ public class MinecraftServer implements Runnable {
 
 	}
 
+
+	// Startup Method with running loop.
 	public void run() {
 		a.info("Now accepting input on " + this.s);
 		int var1 = 50000000;
 		int var2 = 500000000;
 
-		// Load plugins in.
-        a.info("Loading Plugins...");
-
-		List<Plugin> plugins = new ArrayList<Plugin>();
-		try {
-			plugins = HoseCraft.getPluginManager().loadPlugins(new File(workingDirectory+"/plugins"));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-
-		if (plugins.size() > 0) {
-			for (Plugin pl : plugins) {
-                a.info("Enabling "+pl.getName());
-				pl.onEnable();
-			}
-		}
+        // Started? Enable plugins.
+        a.info("Enabling plugins...");
+        if (HoseCraft.getPluginManager().getPlugins().size() > 0) {
+            for (Plugin pl : HoseCraft.getPluginManager().getPlugins()) {
+                a.info("Enabling "+pl.getName()+"..");
+                pl.setEnabled(true);
+            }
+        }
 
 		try {
 			long var3 = System.nanoTime();
@@ -713,6 +707,21 @@ public class MinecraftServer implements Runnable {
 			MinecraftServer var1 = var6 = new MinecraftServer();
 			a.info("Setting up");
 
+            a.info("Loading Plugins...");
+
+            List<Plugin> plugins = new ArrayList<Plugin>();
+            try {
+                plugins = var1.HoseCraft.getPluginManager().loadPlugins(new File(var1.workingDirectory+"/plugins"));
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+
+            if (plugins.size() > 0) {
+                for (Plugin pl : plugins) {
+                    pl.onLoad();
+                }
+            }
+
 			File worldDir = new File(var1.worldName+"/");
 			File worldFile = new File(var1.worldName+"/level.dat");
 			if(worldDir.exists() && worldFile.exists()) {
@@ -742,6 +751,7 @@ public class MinecraftServer implements Runnable {
 			var1.c.creativeMode = true;
 			var1.c.growTrees = var1.y;
 			var1.c.addListener$74652038(var1);
+
 			(new Thread(var6)).start();
 		} catch (Exception var5) {
 			a.severe("Failed to start the server!");

@@ -10,7 +10,6 @@ public class JavaPlugin implements Plugin {
     private File dataFolder;
     private Logger logger;
     private Server serverinstance;
-
     private boolean enabled;
 
     public JavaPlugin() {
@@ -33,9 +32,21 @@ public class JavaPlugin implements Plugin {
     public Server getServer() {
         return this.serverinstance;
     }
+    public boolean isEnabled() { return this.enabled; }
+
+    public void setEnabled(boolean status) {
+        this.enabled = status;
+        if (status) {
+            onEnable();
+        } else {
+            onDisable();
+        }
+    }
 
     // Stuff that plugins can override
-
+    public void onLoad() {
+        // Called when the plugin is loaded.
+    }
     public void onEnable() {
         // Called when plugin is enabled.
     }
