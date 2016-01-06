@@ -1,6 +1,7 @@
-package com.infermc.hosecraft.commands;
+package com.infermc.hosecraft.command.core;
 
-import com.infermc.hosecraft.events.chat.CommandSource;
+import com.infermc.hosecraft.command.CommandInterface;
+import com.infermc.hosecraft.command.CommandSource;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 

@@ -1,6 +1,9 @@
-package com.infermc.hosecraft.commands;
+package com.infermc.hosecraft.command;
 
-import com.infermc.hosecraft.events.chat.CommandSource;
+import com.infermc.hosecraft.command.core.helpCommand;
+import com.infermc.hosecraft.command.core.listCommand;
+import com.infermc.hosecraft.command.core.pluginCommand;
+import com.infermc.hosecraft.command.core.versionCommand;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 
@@ -14,10 +17,10 @@ public class CommandRegistry {
     public CommandRegistry(Server server) {
         this.server = server;
 
-        // Register our own commands.
+        // Register our own command.
         this.registerCommand(null,new Command("version",new versionCommand(this.server)).setDescription("Returns the Server version."));
         this.registerCommand(null,new Command("list",new listCommand(this.server)).setDescription("Lists all online players."));
-        this.registerCommand(null,new Command("help",new helpCommand(this.server)).setDescription("Lists all known commands."));
+        this.registerCommand(null,new Command("help",new helpCommand(this.server)).setDescription("Lists all known command."));
         this.registerCommand(null,new Command("pl",new pluginCommand(this.server)).setDescription("Lists all loaded plugins."));
         this.registerCommand(null,new Command("plugins",new pluginCommand(this.server)).setDescription("Lists all loaded plugins."));
     }

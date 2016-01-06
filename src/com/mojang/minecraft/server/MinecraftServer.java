@@ -1,8 +1,7 @@
 package com.mojang.minecraft.server;
 
-import com.infermc.hosecraft.events.chat.CommandEvent;
-import com.infermc.hosecraft.events.chat.CommandSource;
-import com.infermc.hosecraft.events.chat.ConsoleSource;
+import com.infermc.hosecraft.command.CommandSource;
+import com.infermc.hosecraft.command.ConsoleSource;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 import com.mojang.minecraft.level.LevelLoader;

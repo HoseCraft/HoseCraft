@@ -1,4 +1,4 @@
-package com.infermc.hosecraft.events.chat;
+package com.infermc.hosecraft.command;
 
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;

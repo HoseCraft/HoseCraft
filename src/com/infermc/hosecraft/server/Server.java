@@ -1,8 +1,6 @@
 package com.infermc.hosecraft.server;
 
-import com.infermc.hosecraft.commands.CommandInterface;
-import com.infermc.hosecraft.commands.CommandRegistry;
-import com.infermc.hosecraft.events.chat.CommandSource;
+import com.infermc.hosecraft.command.CommandRegistry;
 import com.infermc.hosecraft.logging.ServerLogger;
 import com.infermc.hosecraft.permissions.PermissionProvider;
 import com.infermc.hosecraft.plugins.PluginManager;
@@ -10,10 +8,8 @@ import com.infermc.hosecraft.wrappers.ConfigSection;
 import com.infermc.hosecraft.wrappers.YamlConfiguration;
 import com.mojang.minecraft.server.MinecraftServer;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Server {

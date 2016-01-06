@@ -1,6 +1,4 @@
-package com.infermc.hosecraft.commands;
-
-import com.infermc.hosecraft.events.chat.CommandSource;
+package com.infermc.hosecraft.command;
 
 public class Command {
     private String name;

@@ -1,6 +1,6 @@
 package com.infermc.hosecraft.server;
 
-import com.infermc.hosecraft.events.chat.CommandSource;
+import com.infermc.hosecraft.command.CommandSource;
 import com.mojang.minecraft.net.PacketType;
 import com.mojang.minecraft.server.HandleClient;
 

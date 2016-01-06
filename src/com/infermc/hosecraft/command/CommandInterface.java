@@ -1,6 +1,4 @@
-package com.infermc.hosecraft.commands;
-
-import com.infermc.hosecraft.events.chat.CommandSource;
+package com.infermc.hosecraft.command;
 
 /**
  * Created by Thomas on 05/01/2016.

@@ -1,6 +1,9 @@
-package com.infermc.hosecraft.commands;
+package com.infermc.hosecraft.command.core;
 
-import com.infermc.hosecraft.events.chat.CommandSource;
+import com.infermc.hosecraft.command.Command;
+import com.infermc.hosecraft.command.CommandInterface;
+import com.infermc.hosecraft.command.CommandRegistry;
+import com.infermc.hosecraft.command.CommandSource;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
@@ -24,12 +27,12 @@ public class helpCommand implements CommandInterface {
             }
             plname = pl.getName();
         }
-        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands().size()+" total known commands.");
-        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands(pl).size()+" "+plname+" commands.");
+        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands().size()+" total known command.");
+        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands(pl).size()+" "+plname+" command.");
         for (Command cmd : cmdReg.getCommands(pl)) {
             source.sendMessage(Chat.YELLOW+"/"+cmd.getName()+" - "+cmd.getDescription());
         }
-        source.sendMessage(Chat.YELLOW+"Use /help <pluginname> to get commands for a specific plugin.");
+        source.sendMessage(Chat.YELLOW+"Use /help <pluginname> to get command for a specific plugin.");
         return true;
     }
 }
