@@ -31,7 +31,7 @@ public class Player implements CommandSource {
         return this.socket;
     }
     public Location getLocation() { return this.location; }
-    public Boolean isOperator() {
+    public boolean isOperator() {
         return this.server.MC.g.c(this.name);
     }
     public void setDisplayname(String display) {

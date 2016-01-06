@@ -10,12 +10,10 @@ public class ConsoleSource implements CommandSource {
         this.server=server;
     }
 
-    @Override
     public void sendMessage(String msg) {
         System.out.println(Chat.stripColour(msg));
     }
 
-    @Override
     public Server getServer() {
         return this.server;
     }
@@ -24,8 +22,7 @@ public class ConsoleSource implements CommandSource {
         return "CONSOLE";
     }
 
-    @Override
-    public Boolean isOperator() {
+    public boolean isOperator() {
         return true;
     }
 }
