@@ -2,10 +2,8 @@ package com.infermc.hosecraft.wrappers;
 
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.Collections;
 import java.util.Map;
 
 // Similar to Bukkit/Spigots class of the same name. Although much more simpler.
@@ -14,6 +12,7 @@ public class YamlConfiguration {
     private Yaml yml = new Yaml();
 
     public YamlConfiguration() {
+        this.dataMap = Collections.emptyMap();
     }
 
     public YamlConfiguration(File file) {
@@ -37,34 +36,32 @@ public class YamlConfiguration {
     }
 
     // Getters.
-    public Object get(String path) {
+    public ConfigSection getSection(String path) {
         if (dataMap.containsKey(path)) {
-            Object res = dataMap.get(path);
-            return res;
+            Object section = dataMap.get(path);
+            if (section instanceof Map) {
+                return new ConfigSection((Map) section);
+            } else {
+
+            }
         }
         return null;
     }
-    public Object get(String path, Object def) {
-        Object res = get(path);
-        if (res == null) {
-            return def;
-        }
-        return res;
+    public ConfigSection getRoot() {
+        return new ConfigSection(dataMap);
+    }
+    public void setSection(String path, ConfigSection section) {
+        dataMap.put(path,section);
     }
 
-    // String
-    public String getString(String path) {
-        if (dataMap.containsKey(path)) {
-            Object res = dataMap.get(path);
-            return res.toString();
-        }
-        return null;
+    public void save(File file) throws IOException {
+        Writer writer = new FileWriter(file);
+        yml.dump(dataMap,writer);
+        writer.close();
     }
-    public String getString(String path, String def) {
-        String res = getString(path);
-        if (res == null) {
-            return def;
-        }
-        return res;
+    public void save(OutputStream input) throws IOException {
+        Writer writer = new OutputStreamWriter(input);
+        yml.dump(dataMap,writer);
+        writer.close();
     }
 }

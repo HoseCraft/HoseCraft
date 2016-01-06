@@ -27,6 +27,9 @@ public class Chat {
     public static String stripColour(String input) {
         return input.replaceAll("&[1-9a-f]", "");
     }
+    public static String replaceAltCodes(Character code,String input) {
+        return input.replaceAll(code+"[1-9a-f]", "&$1");
+    }
 
     public static List<String> wordWrap(String input, int maxLineLength) {
         String[] words = input.split(" ");

@@ -6,9 +6,11 @@ import com.infermc.hosecraft.events.chat.CommandSource;
 import com.infermc.hosecraft.logging.ServerLogger;
 import com.infermc.hosecraft.permissions.PermissionProvider;
 import com.infermc.hosecraft.plugins.PluginManager;
+import com.infermc.hosecraft.wrappers.ConfigSection;
 import com.infermc.hosecraft.wrappers.YamlConfiguration;
 import com.mojang.minecraft.server.MinecraftServer;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +35,12 @@ public class Server {
         // Load hosecraft stuff
         InputStream input = getClass().getResourceAsStream("/hosecraft.yml");
         YamlConfiguration hosecraft = new YamlConfiguration();
-        hosecraft.load(input);
-
-        this.version = (Double) hosecraft.get("version",0.0);
-        this.flavour = hosecraft.getString("flavour","MISSINGO");
+        if (input != null) {
+            hosecraft.load(input);
+        }
+        ConfigSection section = hosecraft.getRoot();
+        this.version = (Double) section.get("version",0.0);
+        this.flavour = section.getString("flavour","MISSINGNO");
 
     }
     public ArrayList<Player> getPlayers() {
