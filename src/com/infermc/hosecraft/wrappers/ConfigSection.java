@@ -3,14 +3,11 @@ package com.infermc.hosecraft.wrappers;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * Created by Thomas on 06/01/2016.
- */
 public class ConfigSection {
     private Map dataMap;
 
     public ConfigSection() {
-        this.dataMap = Collections.emptyMap();
+        this.dataMap = Collections.<Object,Object>emptyMap();
     }
     public ConfigSection(Map data) {
         this.dataMap = data;
@@ -22,6 +19,10 @@ public class ConfigSection {
     }
 
     // Getters.
+    public Map get() {
+        return this.dataMap;
+    }
+
     public Object get(String path) {
         if (dataMap == null) return null;
         if (dataMap.containsKey(path)) {

@@ -23,4 +23,9 @@ public class ConsoleSource implements CommandSource {
     public String getName() {
         return "CONSOLE";
     }
+
+    @Override
+    public Boolean isOperator() {
+        return true;
+    }
 }
