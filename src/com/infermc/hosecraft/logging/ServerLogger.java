@@ -2,6 +2,7 @@ package com.infermc.hosecraft.logging;
 
 import com.mojang.minecraft.server.TimestampFormatter;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.*;
 
@@ -12,8 +13,10 @@ public class ServerLogger {
     public ServerLogger() {
         TimestampFormatter formatter = new TimestampFormatter();
 
+        File logDir = new File("logs/");
+        if (!logDir.exists()) logDir.mkdirs();
         try {
-            fh = new FileHandler("latest.log",true);
+            fh = new FileHandler("logs/latest.log",true);
         } catch (IOException e) {
             e.printStackTrace();
         }

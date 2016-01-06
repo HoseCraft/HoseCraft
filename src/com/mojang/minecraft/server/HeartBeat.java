@@ -27,7 +27,7 @@ final class HeartBeat extends Thread {
       HttpURLConnection var1 = null;
 
       try {
-         (var1 = (HttpURLConnection)(new URL("http://www.minecraft.net/heartbeat.jsp")).openConnection()).setRequestMethod("POST");
+         (var1 = (HttpURLConnection)(new URL(this.b.heartbeatURL)).openConnection()).setRequestMethod("POST");
          var1.setDoOutput(true);
          var1.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
          var1.setRequestProperty("Content-Length", "" + Integer.toString(this.a.getBytes().length));

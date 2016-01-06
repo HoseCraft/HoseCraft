@@ -74,7 +74,7 @@ public final class LevelGenerator {
        int var54;
        for (var51 = 0; var51 < this.width; ++var51) {
            if (var51 % 4 == 0) {
-               server.a(Integer.toString(var51 * 100 / (this.width - 1)));
+               //server.update(Integer.toString(var51 * 100 / (this.width - 1)));
            }
 
            for (var54 = 0; var54 < this.depth; ++var54) {
@@ -258,7 +258,7 @@ public final class LevelGenerator {
        int var63;
        for (var11 = 0; var11 < var46; ++var11) {
            if (var11 % 4 == 0) {
-               server.a(Integer.toString(var11 * 100 / (this.width - 1)));
+               //server.update(Integer.toString(var11 * 100 / (this.width - 1)));
            }
 
            for (var12 = 0; var12 < var48; ++var12) {
@@ -290,7 +290,7 @@ public final class LevelGenerator {
        for (var51 = 0; var51 < var48; ++var51) {
            var54 = this.random.nextInt(2);
            if (var51 % 4 == 0) {
-               server.a(Integer.toString(var51 * 50 / (var48 - 1)));
+               //server.update(Integer.toString(var51 * 50 / (var48 - 1)));
            }
            var24 = this.random.nextInt(this.width);
            var11 = this.random.nextInt(this.depth);
@@ -328,7 +328,7 @@ public final class LevelGenerator {
        for (var54 = 0; var54 < var51; ++var54) {
            var24 = this.random.nextInt(2);
            if (var51 % 4 == 0) {
-               server.a(Integer.toString(var54 * 50 / (var51 - 1) + 50));
+               //server.update(Integer.toString(var54 * 50 / (var51 - 1) + 50));
            }
            var11 = this.random.nextInt(this.width);
            var12 = this.random.nextInt(this.height);
@@ -375,7 +375,7 @@ public final class LevelGenerator {
 
        for (var54 = 0; var54 < var51; ++var54) {
            if (var51 % 4 == 0) {
-               server.a(Integer.toString((var54 * 50 / (var51 - 1) + 50)));
+               //server.update(Integer.toString((var54 * 50 / (var51 - 1) + 50)));
            }
            var24 = this.random.nextInt(this.width);
            var11 = this.random.nextInt(this.depth);

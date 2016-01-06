@@ -1,5 +1,8 @@
 package com.mojang.minecraft.server;
 
+import com.infermc.hosecraft.events.chat.CommandEvent;
+import com.infermc.hosecraft.events.chat.CommandSource;
+import com.infermc.hosecraft.events.chat.ConsoleSource;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 import com.mojang.minecraft.level.LevelLoader;
@@ -8,23 +11,12 @@ import com.mojang.minecraft.net.NetworkManager;
 import com.mojang.minecraft.net.PacketType;
 import com.mojang.minecraft.net.SocketListener;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.channels.SocketChannel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -62,11 +54,16 @@ public class MinecraftServer implements Runnable {
 	// HoseCraft stuff
 	public Server HoseCraft = new Server(this);
 	public File workingDirectory = new File(System.getProperty("user.dir"));
+	public String heartbeatURL;
+	public String worldName;
+	public String worldType;
 
 	public MinecraftServer() {
 		this.j = new GenerateMD5(this.w);
 		this.k = false;
 		this.y = false;
+
+		a.info("Starting Classic Server running HoseCraft v"+HoseCraft.getVersion()+"-"+HoseCraft.getFlavour());
 
 		try {
 			this.q.load(new FileReader("server.properties"));
@@ -83,6 +80,9 @@ public class MinecraftServer implements Runnable {
 			this.k = Boolean.parseBoolean(this.q.getProperty("verify-names", "true"));
 			this.y = Boolean.parseBoolean(this.q.getProperty("grow-trees", "false"));
 			this.f = Boolean.parseBoolean(this.q.getProperty("admin-slot", "false"));
+			this.worldName = this.q.getProperty("world-name", "world");
+			this.worldType = this.q.getProperty("world-type", "DEFAULT");
+			this.heartbeatURL = this.q.getProperty("heartbeat", "http://www.minecraft.net/heartbeat.jsp");
 			if(this.p < 1) {
 				this.p = 1;
 			}
@@ -101,6 +101,9 @@ public class MinecraftServer implements Runnable {
 			this.q.setProperty("max-connections", "3");
 			this.q.setProperty("grow-trees", "" + this.y);
 			this.q.setProperty("admin-slot", "" + this.f);
+			this.q.setProperty("world-name", this.worldName);
+			this.q.setProperty("world-type", this.worldType);
+			this.q.setProperty("heartbeat", "" + this.heartbeatURL);
 		} catch (Exception var3) {
 			var3.printStackTrace();
 			a.warning("server.properties is broken! Delete it or fix it!");
@@ -193,9 +196,15 @@ public class MinecraftServer implements Runnable {
 
 		// Load plugins in.
         a.info("Loading Plugins...");
-		Plugin[] plugins = HoseCraft.getPluginManager().loadPlugins(new File(workingDirectory+"/plugins"));
 
-		if (plugins != null) {
+		List<Plugin> plugins = new ArrayList<Plugin>();
+		try {
+			plugins = HoseCraft.getPluginManager().loadPlugins(new File(workingDirectory+"/plugins"));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+		if (plugins.size() > 0) {
 			for (Plugin pl : plugins) {
                 a.info("Enabling "+pl.getName());
 				pl.onEnable();
@@ -218,7 +227,7 @@ public class MinecraftServer implements Runnable {
 
 						try {
 							new LevelLoader(var8);
-							LevelLoader.a(var8.c, new FileOutputStream("server_level.dat"));
+							LevelLoader.a(var8.c, new FileOutputStream(this.worldName+"/level.dat"));
 						} catch (Exception var10) {
 							a.severe("Failed to save the level! " + var10);
 						}
@@ -236,6 +245,7 @@ public class MinecraftServer implements Runnable {
 						var9.put("salt", this.w);
 						var9.put("admin-slot", Boolean.valueOf(this.f));
 						var9.put("version", Byte.valueOf((byte)7));
+						var9.put("software", "HoseCraft v"+this.HoseCraft.getVersion());
 						String var12 = a((Map)var9);
 						(new HeartBeat(this, var12)).start();
 					}
@@ -464,70 +474,93 @@ public class MinecraftServer implements Runnable {
 		while(var2.startsWith("/")) {
 			var2 = var2.substring(1);
 		}
+
+		String[] var3 = var2.split(" ");
+		String[] args = Arrays.copyOfRange(var3, 1, var3.length);
+
+		CommandSource source;
+		if (var1 == null) {
+			source = new ConsoleSource(this.HoseCraft);
+		} else {
+			source = var1.player;
+		}
+		this.HoseCraft.getCommandRegistry().runCommand(source,var3[0],args);
+		return;
+		/*
+		CommandEvent ev = new CommandEvent(source,var3[0],args);
+		this.HoseCraft.getPluginManager().callEvent(ev);
+		if (ev.isCancelled()) {
+			return;
+		}
+
 		// This all needs replacing with command classes
 		a.info((var1 == null?"[console]":var1.b) + " admins: " + var2);
-		String[] var3;
-		if((var3 = var2.split(" "))[0].toLowerCase().equals("ban") && var3.length > 1) {
-			this.e(var3[1]);
-		} else if(var3[0].toLowerCase().equals("kick") && var3.length > 1) {
-			this.d(var3[1]);
-		} else if(var3[0].toLowerCase().equals("banip") && var3.length > 1) {
-			this.h(var3[1]);
-		} else if(var3[0].toLowerCase().equals("unban") && var3.length > 1) {
-			String var5 = var3[1];
-			this.h.b(var5);
-		} else if(var3[0].toLowerCase().equals("op") && var3.length > 1) {
-			this.f(var3[1]);
-		} else if(var3[0].toLowerCase().equals("deop") && var3.length > 1) {
-			this.g(var3[1]);
-		} else if(var3[0].toLowerCase().equals("setspawn")) {
-			if(var1 != null) {
-				this.c.setSpawnPos(var1.d / 32, var1.e / 32, var1.f / 32, (float)(var1.h * 320 / 256));
+		if (var1 == null || var1.player.isOperator()) {
+			if (var3[0].toLowerCase().equals("ban") && var3.length > 1) {
+				this.e(var3[1]);
+			} else if (var3[0].toLowerCase().equals("kick") && var3.length > 1) {
+				this.d(var3[1]);
+			} else if (var3[0].toLowerCase().equals("banip") && var3.length > 1) {
+				this.h(var3[1]);
+			} else if (var3[0].toLowerCase().equals("unban") && var3.length > 1) {
+				String var5 = var3[1];
+				this.h.b(var5);
+			} else if (var3[0].toLowerCase().equals("op") && var3.length > 1) {
+				this.f(var3[1]);
+			} else if (var3[0].toLowerCase().equals("deop") && var3.length > 1) {
+				this.g(var3[1]);
+			} else if (var3[0].toLowerCase().equals("setspawn")) {
+				if (var1 != null) {
+					this.c.setSpawnPos(var1.d / 32, var1.e / 32, var1.f / 32, (float) (var1.h * 320 / 256));
+				} else {
+					a.info("Can\'t set spawn from console!");
+				}
 			} else {
-				a.info("Can\'t set spawn from console!");
+				if (var3[0].toLowerCase().equals("solid")) {
+					if (var1 != null) {
+						var1.i = !var1.i;
+						if (var1.i) {
+							var1.b("Now placing unbreakable stone");
+							return;
+						}
+
+						var1.b("Now placing normal stone");
+						return;
+					}
+				} else {
+					if (var3[0].toLowerCase().equals("broadcast") && var3.length > 1) {
+						this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var2.substring("broadcast ".length()).trim()});
+						return;
+					}
+
+					if (var3[0].toLowerCase().equals("say") && var3.length > 1) {
+						this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var2.substring("say ".length()).trim()});
+						return;
+					}
+
+					if ((var3[0].toLowerCase().equals("teleport") || var3[0].toLowerCase().equals("tp")) && var3.length > 1) {
+						if (var1 == null) {
+							a.info("Can\'t teleport from console!");
+							return;
+						}
+
+						HandleClient var4;
+						if ((var4 = this.c(var3[1])) == null) {
+							var1.b(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), "No such player"});
+							return;
+						}
+						// Assuming Teleport
+						var1.NetworkManager.a(PacketType.POSITION_UPDATE, new Object[]{Integer.valueOf(-1), Integer.valueOf(var4.d), Integer.valueOf(var4.e), Integer.valueOf(var4.f), Integer.valueOf(var4.h), Integer.valueOf(var4.g)});
+					} else if (var1 != null) {
+						var1.b(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), "Unknown command!"});
+					}
+				}
+
 			}
 		} else {
-			if(var3[0].toLowerCase().equals("solid")) {
-				if(var1 != null) {
-					var1.i = !var1.i;
-					if(var1.i) {
-						var1.b("Now placing unbreakable stone");
-						return;
-					}
-
-					var1.b("Now placing normal stone");
-					return;
-				}
-			} else {
-				if(var3[0].toLowerCase().equals("broadcast") && var3.length > 1) {
-					this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var2.substring("broadcast ".length()).trim()});
-					return;
-				}
-
-				if(var3[0].toLowerCase().equals("say") && var3.length > 1) {
-					this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var2.substring("say ".length()).trim()});
-					return;
-				}
-
-				if((var3[0].toLowerCase().equals("teleport") || var3[0].toLowerCase().equals("tp")) && var3.length > 1) {
-					if(var1 == null) {
-						a.info("Can\'t teleport from console!");
-						return;
-					}
-
-					HandleClient var4;
-					if((var4 = this.c(var3[1])) == null) {
-						var1.b(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), "No such player"});
-						return;
-					}
-					// Assuming Teleport
-					var1.NetworkManager.a(PacketType.POSITION_UPDATE, new Object[]{Integer.valueOf(-1), Integer.valueOf(var4.d), Integer.valueOf(var4.e), Integer.valueOf(var4.f), Integer.valueOf(var4.h), Integer.valueOf(var4.g)});
-				} else if(var1 != null) {
-					var1.b(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), "Unknown command!"});
-				}
-			}
-
+			var1.b(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), "Unknown command!"});
 		}
+		*/
 	}
 
 	public final void a(int var1, int var2, int var3) {
@@ -681,16 +714,18 @@ public class MinecraftServer implements Runnable {
 			MinecraftServer var1 = var6 = new MinecraftServer();
 			a.info("Setting up");
 
-			File var2;
-			if((var2 = new File("server_level.dat")).exists()) {
+			File worldDir = new File(var1.worldName+"/");
+			File worldFile = new File(var1.worldName+"/level.dat");
+			if(worldDir.exists() && worldFile.exists()) {
 				try {
-					var1.c = (new LevelLoader(var1)).a(new FileInputStream(var2));
+					var1.c = (new LevelLoader(var1)).a(new FileInputStream(worldFile));
 				} catch (Exception var4) {
-					a.warning("Failed to load level. Generating net new level");
+					a.warning("Failed to load level. Generating new level");
 					var4.printStackTrace();
 				}
 			} else {
-				a.warning("No level file found. Generating net new level");
+				worldDir.mkdir();
+				a.warning("No level file found. Generating new level");
 			}
 
 			// Generating new level?
@@ -700,7 +735,7 @@ public class MinecraftServer implements Runnable {
 
 			try {
 				new LevelLoader(var1);
-				LevelLoader.a(var1.c, new FileOutputStream("server_level.dat"));
+				LevelLoader.a(var1.c, new FileOutputStream(worldFile));
 			} catch (Exception var3) {
 				// Do nothing apparently. Okay notch.
 			}

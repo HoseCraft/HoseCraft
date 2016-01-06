@@ -1,19 +1,22 @@
 package com.infermc.hosecraft.plugins;
 
+import com.infermc.hosecraft.events.*;
+import com.infermc.hosecraft.events.EventListener;
 import com.infermc.hosecraft.server.Server;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -22,10 +25,11 @@ public class PluginManager {
     private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
     private Server serverInstance;
 
+    public HashMap<Class<?>,HandlerList> listeners = new HashMap<Class<?>, HandlerList>();
+
     public PluginManager(Server si) {
         this.serverInstance = si;
     }
-
     public Server getServer() {
         return this.serverInstance;
     }
@@ -38,6 +42,9 @@ public class PluginManager {
         }
         return null;
     }
+    public List<Plugin> getPlugins() {
+        return plugins;
+    }
     public void unloadPlugin(String name) {
         Plugin pl = getPlugin(name);
         if (pl != null) unloadPlugin(pl);
@@ -46,72 +53,88 @@ public class PluginManager {
 
     }
 
-    public Plugin[] loadPlugins(File directory) {
-        if (directory.isDirectory()) {
-            ArrayList<Plugin> list = new ArrayList<Plugin>();
-            for (File f : directory.listFiles()) {
-                Plugin pl = loadPlugin(f);
-                if (pl != null) list.add(pl);
+    public List<Plugin> loadPlugins(File directory) throws FileNotFoundException {
+        ArrayList<Plugin> list = new ArrayList<Plugin>();
+        if (directory.exists()) {
+            if (directory.isDirectory()) {
+                for (File f : directory.listFiles()) {
+                    Plugin pl = loadPlugin(f);
+                    if (pl != null) {
+                        list.add(pl);
+                        plugins.add(pl);
+                    }
+                }
+                return list;
             }
-            //return (Plugin[]) list.toArray();
-            return null;
+        } else {
+            throw new FileNotFoundException();
         }
-        return null;
+        return list;
     }
 
     public Plugin loadPlugin(File file) {
-        JarFile jar;
+        PluginClassLoader loader = null;
         try {
-            jar = new JarFile(file);
-        } catch (IOException e) {
-            serverInstance.getLogger().warning(e.getMessage());
-            return null;
+            loader = new PluginClassLoader(this.getClass().getClassLoader(),serverInstance,file);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-        JarEntry pluginFile = jar.getJarEntry("plugin.yml");
-        if (pluginFile != null) {
-            InputStream pluginstream;
+        return loader.plugin;
+    }
 
-            try {
-                pluginstream = jar.getInputStream(pluginFile);
-            } catch (IOException e) {
-                serverInstance.getLogger().warning(e.getMessage());
-                return null;
+    public static List<Method> getMethodsAnnotatedWith(final Class<?> type, final Class<? extends Annotation> annotation) {
+        final List<Method> methods = new ArrayList<Method>();
+        Class<?> klass = type;
+        while (klass != Object.class) { // need to iterated thought hierarchy in order to retrieve methods from above the current instance
+            // iterate though the list of methods declared in the class represented by klass variable, and add those annotated with the specified annotation
+            final List<Method> allMethods = new ArrayList<Method>(Arrays.asList(klass.getDeclaredMethods()));
+            for (final Method method : allMethods) {
+                if (method.isAnnotationPresent(annotation)) {
+                    Annotation annotInstance = method.getAnnotation(annotation);
+                    // TODO process annotInstance
+                    methods.add(method);
+                }
             }
+            // move to the upper class in the hierarchy in search for more methods
+            klass = klass.getSuperclass();
+        }
+        return methods;
+    }
 
-            Yaml pluginyaml = new Yaml();
-            Map pluginyml = (Map) pluginyaml.load(pluginstream);
-
-            String name = (String) pluginyml.get("name");
-            String mainClass = (String) pluginyml.get("main");
-            String desc = (String) pluginyml.get("description");
-            String author = (String) pluginyml.get("author");
-            Double version = (Double) pluginyml.get("version");
-
-            serverInstance.getLogger().info("Attemping to load "+name);
-
-            URLClassLoader child = null;
-            try {
-                child = new URLClassLoader(new URL[] {file.toURL()}, this.getClass().getClassLoader());
-            } catch (MalformedURLException e) {
-                serverInstance.getLogger().warning(e.getMessage());
-                return null;
+    public void registerEvents(Listener listener, Plugin plugin) {
+        // Does nothing!
+        List<Method> methods = getMethodsAnnotatedWith(listener.getClass(), EventHandler.class);
+        for (Method m : methods) {
+            Class<?>[] types = m.getParameterTypes();
+            for (Class<?> c : types) {
+                // Where c is the event the method acts upon.
+                if (Event.class.isAssignableFrom(c)) {
+                    HandlerList handlers;
+                    if (listeners.containsKey(c)) {
+                        handlers = listeners.get(c);
+                    } else {
+                        handlers = new HandlerList();
+                        listeners.put(c,handlers);
+                    }
+                    EventListener el = new EventListener(plugin,m,listener);
+                    handlers.addListener(el);
+                }
             }
-            Class classToLoad = null;
-            try {
-                classToLoad = Class.forName (mainClass, true, child);
-            } catch (ClassNotFoundException e) {
-                //e.printStackTrace();
-                serverInstance.getLogger().warning(e.getMessage());
-                return null;
-            }
+        }
+    }
 
-            Plugin main = new Plugin(serverInstance,name);
-            main.getClass().cast(classToLoad);
-            main.onEnable();
-            return main;
-        } else {
-            getServer().getLogger().warning("Missing plugin.yml in "+file.getName());
-            return null;
+    public void callEvent(Event ev) {
+        if (listeners.containsKey(ev.getClass())) {
+            HandlerList handlers = listeners.get(ev.getClass());
+            for (EventListener l : handlers.getListeners()) {
+                try {
+                    l.getMethod().invoke(l.getListener(), ev);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -1,10 +1,17 @@
 package com.infermc.hosecraft.server;
 
+import com.infermc.hosecraft.commands.CommandInterface;
+import com.infermc.hosecraft.commands.CommandRegistry;
+import com.infermc.hosecraft.events.chat.CommandSource;
 import com.infermc.hosecraft.logging.ServerLogger;
+import com.infermc.hosecraft.permissions.PermissionProvider;
 import com.infermc.hosecraft.plugins.PluginManager;
+import com.infermc.hosecraft.wrappers.YamlConfiguration;
 import com.mojang.minecraft.server.MinecraftServer;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Server {
@@ -13,10 +20,24 @@ public class Server {
     public MinecraftServer MC;
     public ArrayList<Player> players = new ArrayList<Player>();
     public ServerLogger loggerManager = new ServerLogger();
+    private PermissionProvider permissionProvider = new PermissionProvider();
+    private CommandRegistry commandRegistry = new CommandRegistry(this);
+
+    public Double version;
+    public String flavour;
 
     public Server(MinecraftServer instance) {
         MC = instance;
         log = loggerManager.getLogger();
+
+        // Load hosecraft stuff
+        InputStream input = getClass().getResourceAsStream("/hosecraft.yml");
+        YamlConfiguration hosecraft = new YamlConfiguration();
+        hosecraft.load(input);
+
+        this.version = (Double) hosecraft.get("version",0.0);
+        this.flavour = hosecraft.getString("flavour","MISSINGO");
+
     }
     public ArrayList<Player> getPlayers() {
         return this.players;
@@ -26,5 +47,16 @@ public class Server {
     }
     public Logger getLogger() {
         return log;
+    }
+    public Double getVersion() { return this.version; }
+    public String getFlavour() { return this.flavour; }
+    public PermissionProvider getPermissionProvider() {
+        return this.permissionProvider;
+    }
+    public void setPermissionProvider(PermissionProvider permissionProvider) {
+        this.permissionProvider = permissionProvider;
+    }
+    public CommandRegistry getCommandRegistry() {
+        return this.commandRegistry;
     }
 }
