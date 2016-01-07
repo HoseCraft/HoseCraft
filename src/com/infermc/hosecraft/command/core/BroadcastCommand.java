@@ -8,8 +8,10 @@ import com.infermc.hosecraft.util.Chat;
 
 public class BroadcastCommand implements CommandInterface {
     private Server server;
+    private String cmdName;
 
-    public BroadcastCommand(Server server) {
+    public BroadcastCommand(String cmdName, Server server) {
+        this.cmdName = cmdName;
         this.server = server;
     }
 
@@ -21,7 +23,7 @@ public class BroadcastCommand implements CommandInterface {
                     p.sendMessage(String.join(" ", args));
                 }
             } else {
-                source.sendMessage(Chat.YELLOW + "Syntax: /broadcast <message>");
+                source.sendMessage(Chat.YELLOW + "Syntax: /" + cmdName + " <message>");
             }
             return true;
         }

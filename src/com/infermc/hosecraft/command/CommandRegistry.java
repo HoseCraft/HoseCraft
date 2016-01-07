@@ -34,8 +34,8 @@ public class CommandRegistry {
 
         this.registerCommand(null, new Command("solid", new SolidCommand(this.server)).setDescription("Toggles placing bedrock instead of stone."));
 
-        this.registerCommand(null, new Command("broadcast", new BroadcastCommand(this.server, "broadcast")).setDescription("Broadcasts a message."));
-        this.registerCommand(null, new Command("say", new BroadcastCommand(this.server, "say")).setDescription("Broadcasts a message."));
+        this.registerCommand(null, new Command("broadcast", new BroadcastCommand("broadcast", this.server)).setDescription("Broadcasts a message."));
+        this.registerCommand(null, new Command("say", new BroadcastCommand("say", this.server)).setDescription("Broadcasts a message."));
 
         this.registerCommand(null, new Command("tp", new TpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
         this.registerCommand(null, new Command("teleport", new TpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
