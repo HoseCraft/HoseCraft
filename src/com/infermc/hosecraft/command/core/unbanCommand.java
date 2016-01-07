@@ -16,10 +16,10 @@ public class unbanCommand implements CommandInterface {
     public boolean run(CommandSource source, String[] args) {
         if (source.isOperator()) {
             if (args.length >= 1) {
-                boolean res = server.unban(args[0]);
+                boolean res = this.server.unban(args[0]);
                 // Log to console.
                 if (res) {
-                    server.getLogger().info(source.getName() + " unbanned " + args[0] + " from the server.");
+                    this.server.getLogger().info(source.getName() + " unbanned " + args[0] + " from the server.");
                     source.sendMessage("Successfully unbanned "+args[0]);
                 } else {
                     source.sendMessage(args[0]+" isn't banned!");

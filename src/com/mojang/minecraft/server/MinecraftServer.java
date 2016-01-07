@@ -477,7 +477,7 @@ public class MinecraftServer implements Runnable {
 			source = new ConsoleSource(this.HoseCraft);
 		} else {
 			source = var1.player;
-            this.a.info(var1.player.getName()+": "+fullCommand);
+            this.a.info(var1.player.getName()+": /"+fullCommand);
 		}
 		this.HoseCraft.getCommandRegistry().runCommand(source,var3[0],args);
 		return;
@@ -732,8 +732,10 @@ public class MinecraftServer implements Runnable {
             a.info("Loading Plugins...");
 
             List<Plugin> plugins = new ArrayList<Plugin>();
+			File pluginDir = new File(var1.workingDirectory+"/plugins");
+			if (!pluginDir.exists()) pluginDir.mkdir();
             try {
-                plugins = var1.HoseCraft.getPluginManager().loadPlugins(new File(var1.workingDirectory+"/plugins"));
+                plugins = var1.HoseCraft.getPluginManager().loadPlugins(pluginDir);
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }

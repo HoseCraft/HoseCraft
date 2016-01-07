@@ -11,7 +11,7 @@ public class ConsoleSource implements CommandSource {
     }
 
     public void sendMessage(String msg) {
-        System.out.println(Chat.stripColour(msg));
+        this.server.getLogger().info(Chat.stripColour(msg));
     }
 
     public Server getServer() {

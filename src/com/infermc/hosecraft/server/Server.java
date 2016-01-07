@@ -97,6 +97,7 @@ public class Server {
     public boolean unban(String name) {
         if (this.MC.h.c(name)) {
             this.MC.h.b(name);
+            return true;
         }
         return false;
     }
