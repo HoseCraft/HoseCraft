@@ -6,24 +6,22 @@ import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
 
-// Ops a player.
-public class opCommand implements CommandInterface {
+public class BroadcastCommand implements CommandInterface {
     private Server server;
 
-    public opCommand(Server server) {
+    public BroadcastCommand(Server server) {
         this.server = server;
     }
 
     @Override
     public boolean run(CommandSource source, String[] args) {
         if (source.isOperator()) {
-            if (args.length >= 1) {
-                this.server.MC.opPlayer(args[0]);
-                for (Player p : this.server.getPlayers()) {
-                    if (p.isOperator()) p.sendMessage(Chat.GRAY+source.getName()+" opped "+args[0]);
+            if (args.length > 0) {
+                for (Player p : server.getPlayers()) {
+                    p.sendMessage(String.join(" ", args));
                 }
             } else {
-                source.sendMessage(Chat.YELLOW+"Syntax: /op <username>");
+                source.sendMessage(Chat.YELLOW + "Syntax: /broadcast <message>");
             }
             return true;
         }

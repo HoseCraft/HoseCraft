@@ -1,6 +1,7 @@
 package com.infermc.hosecraft.events;
 
 public interface Cancellable {
+
     // Event Template
     boolean cancelled = false;
 

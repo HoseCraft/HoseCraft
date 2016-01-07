@@ -12,12 +12,15 @@ public class PlayerQuitEvent extends Event {
         this.player = player;
         this.quitMessage = message;
     }
+
     public Player getPlayer() {
         return this.player;
     }
+
     public String getMessage() {
         return this.quitMessage;
     }
+
     public void setMessage(String msg) {
         this.quitMessage = msg;
     }

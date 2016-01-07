@@ -19,7 +19,7 @@ public class PluginClassLoader extends URLClassLoader {
     private Server server;
 
     public PluginClassLoader(ClassLoader parent, Server serverInstance, File file) throws MalformedURLException {
-        super(new URL[] { file.toURI().toURL() }, parent);
+        super(new URL[]{file.toURI().toURL()}, parent);
         JarFile jar;
         try {
             jar = new JarFile(file);
@@ -50,18 +50,18 @@ public class PluginClassLoader extends URLClassLoader {
             this.name = name;
             this.server = serverInstance;
 
-            serverInstance.getLogger().info("Attemping to load "+name);
+            serverInstance.getLogger().info("Attemping to load " + name);
 
             URLClassLoader child = null;
             try {
-                child = new URLClassLoader(new URL[] {file.toURL()}, this.getClass().getClassLoader());
+                child = new URLClassLoader(new URL[]{file.toURL()}, this.getClass().getClassLoader());
             } catch (MalformedURLException e) {
                 serverInstance.getLogger().warning(e.getMessage());
                 return;
             }
             Class classToLoad = null;
             try {
-                classToLoad = Class.forName (mainClass, true, this);
+                classToLoad = Class.forName(mainClass, true, this);
             } catch (ClassNotFoundException e) {
                 //e.printStackTrace();
                 serverInstance.getLogger().warning(e.getMessage());
@@ -78,12 +78,12 @@ public class PluginClassLoader extends URLClassLoader {
             }
             this.plugin = pl;
         } else {
-            serverInstance.getLogger().warning("Missing plugin.yml in "+file.getName());
+            serverInstance.getLogger().warning("Missing plugin.yml in " + file.getName());
             return;
         }
     }
 
     public void initialize(JavaPlugin pl) {
-        pl.init(this.name,this.server);
+        pl.init(this.name, this.server);
     }
 }

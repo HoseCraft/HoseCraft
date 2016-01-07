@@ -1,19 +1,26 @@
 package com.infermc.hosecraft.plugins;
 
-import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 
 import java.io.File;
 import java.util.logging.Logger;
 
 public interface Plugin {
-    public String getName();
-    public File getDataFolder();
-    public Logger getLogger();
-    public Server getServer();
-    public void onLoad();
-    public void onEnable();
-    public void onDisable();
-    public boolean isEnabled();
-    public void setEnabled(boolean status);
+    String getName();
+
+    File getDataFolder();
+
+    Logger getLogger();
+
+    Server getServer();
+
+    void onLoad();
+
+    void onEnable();
+
+    void onDisable();
+
+    boolean isEnabled();
+
+    void setEnabled(boolean status);
 }

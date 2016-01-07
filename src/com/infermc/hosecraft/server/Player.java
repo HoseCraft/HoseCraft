@@ -24,19 +24,27 @@ public class Player implements CommandSource {
     public String getName() {
         return this.name;
     }
-    public String getDisplayname(){
+
+    public String getDisplayname() {
         return this.displayname;
     }
+
     public Server getServer() {
         return this.server;
     }
+
     public HandleClient getSocket() {
         return this.socket;
     }
-    public Location getLocation() { return this.location; }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
     public boolean isOperator() {
         return this.server.MC.g.c(this.name);
     }
+
     public void setDisplayname(String display) {
         this.displayname = display;
     }
@@ -57,9 +65,9 @@ public class Player implements CommandSource {
 
 
         // Tell the player themselves.
-        int X = (int) (this.location.getX()*32);
-        int Y = (int) (this.location.getY()*32)+51;
-        int Z = (int) (this.location.getZ()*32);
+        int X = (int) (this.location.getX() * 32);
+        int Y = (int) (this.location.getY() * 32) + 51;
+        int Z = (int) (this.location.getZ() * 32);
 
         socket.b(PacketType.POSITION_ROTATION, new Object[]{Integer.valueOf(-1), Integer.valueOf(X), Integer.valueOf(Y), Integer.valueOf(Z), Byte.valueOf((byte) dest.getYaw()), Byte.valueOf((byte) dest.getPitch())});
         this.server.MC.a(this.getSocket(), PacketType.POSITION_ROTATION, new Object[]{Integer.valueOf(this.socket.c), Integer.valueOf(X), Integer.valueOf(Y), Integer.valueOf(Z), Byte.valueOf((byte) dest.getYaw()), Byte.valueOf((byte) dest.getPitch())});
@@ -70,7 +78,7 @@ public class Player implements CommandSource {
     }
 
     public boolean hasPermission(String permission) {
-        return this.server.getPermissionProvider().hasPermission(this,permission);
+        return this.server.getPermissionProvider().hasPermission(this, permission);
     }
 
     public boolean isBanned() {
@@ -78,15 +86,18 @@ public class Player implements CommandSource {
     }
 
     public boolean ban() {
-        return this.server.ban(this.name,null);
+        return this.server.ban(this.name, null);
     }
+
     public boolean ban(String reason) {
-        return this.server.ban(this.name,reason);
+        return this.server.ban(this.name, reason);
     }
+
     public boolean kick() {
-        return this.server.kick(this.name,null);
+        return this.server.kick(this.name, null);
     }
+
     public boolean kick(String reason) {
-        return this.server.kick(this.name,reason);
+        return this.server.kick(this.name, reason);
     }
 }

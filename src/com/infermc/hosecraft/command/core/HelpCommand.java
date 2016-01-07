@@ -8,9 +8,10 @@ import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
 
-public class helpCommand implements CommandInterface {
+public class HelpCommand implements CommandInterface {
     private Server server;
-    public helpCommand(Server server) {
+
+    public HelpCommand(Server server) {
         this.server = server;
     }
 
@@ -22,17 +23,17 @@ public class helpCommand implements CommandInterface {
         if (args.length >= 1) {
             pl = server.getPluginManager().getPlugin(args[0]);
             if (pl == null) {
-                source.sendMessage(Chat.RED+"Unknown plugin name!");
+                source.sendMessage(Chat.RED + "Unknown plugin name!");
                 return true;
             }
             plname = pl.getName();
         }
-        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands().size()+" total known commands.");
-        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands(pl).size()+" "+plname+" commands.");
+        source.sendMessage(Chat.YELLOW + "There are " + cmdReg.getCommands().size() + " total known commands.");
+        source.sendMessage(Chat.YELLOW + "There are " + cmdReg.getCommands(pl).size() + " " + plname + " commands.");
         for (Command cmd : cmdReg.getCommands(pl)) {
-            source.sendMessage(Chat.YELLOW+"/"+cmd.getName()+" - "+cmd.getDescription());
+            source.sendMessage(Chat.YELLOW + "/" + cmd.getName() + " - " + cmd.getDescription());
         }
-        source.sendMessage(Chat.YELLOW+"Use /help <pluginname> to get command for a specific plugin.");
+        source.sendMessage(Chat.YELLOW + "Use /help <pluginname> to get command for a specific plugin.");
         return true;
     }
 }

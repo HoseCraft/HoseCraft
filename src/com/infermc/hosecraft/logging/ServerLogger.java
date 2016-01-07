@@ -4,7 +4,10 @@ import com.mojang.minecraft.server.TimestampFormatter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerLogger {
     private Logger logger;
@@ -16,7 +19,7 @@ public class ServerLogger {
         File logDir = new File("logs/");
         if (!logDir.exists()) logDir.mkdirs();
         try {
-            fh = new FileHandler("logs/latest.log",true);
+            fh = new FileHandler("logs/latest.log", true);
         } catch (IOException e) {
             e.printStackTrace();
         }

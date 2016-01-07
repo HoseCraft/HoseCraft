@@ -4,47 +4,49 @@ import com.infermc.hosecraft.command.core.*;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CommandRegistry {
 
-    private HashMap<Plugin,List<Command>> commands = new HashMap<Plugin, List<Command>>();
+    private HashMap<Plugin, List<Command>> commands = new HashMap<Plugin, List<Command>>();
     private Server server;
 
     public CommandRegistry(Server server) {
         this.server = server;
 
         // Register our own commands.
-        this.registerCommand(null,new Command("version",new versionCommand(this.server)).setDescription("Returns the Server version."));
-        this.registerCommand(null,new Command("list",new listCommand(this.server)).setDescription("Lists all online players."));
-        this.registerCommand(null,new Command("help",new helpCommand(this.server)).setDescription("Lists all known command."));
+        this.registerCommand(null, new Command("version", new VersionCommand(this.server)).setDescription("Returns the Server version."));
+        this.registerCommand(null, new Command("list", new ListCommand(this.server)).setDescription("Lists all online players."));
+        this.registerCommand(null, new Command("help", new HelpCommand(this.server)).setDescription("Lists all known command."));
 
-        this.registerCommand(null,new Command("pl",new pluginCommand(this.server)).setDescription("Lists all loaded plugins."));
-        this.registerCommand(null,new Command("plugins",new pluginCommand(this.server)).setDescription("Lists all loaded plugins."));
+        this.registerCommand(null, new Command("pl", new PluginCommand(this.server)).setDescription("Lists all loaded plugins."));
+        this.registerCommand(null, new Command("plugins", new PluginCommand(this.server)).setDescription("Lists all loaded plugins."));
 
         // Register original classic commands.
-        this.registerCommand(null,new Command("ban",new banCommand(this.server)).setDescription("Bans a player from the server."));
-        this.registerCommand(null,new Command("kick",new kickCommand(this.server)).setDescription("Kicks a player from the server."));
-        this.registerCommand(null,new Command("unban",new unbanCommand(this.server)).setDescription("Unbans a player from the server."));
+        this.registerCommand(null, new Command("ban", new BanCommand(this.server)).setDescription("Bans a player from the server."));
+        this.registerCommand(null, new Command("kick", new KickCommand(this.server)).setDescription("Kicks a player from the server."));
+        this.registerCommand(null, new Command("unban", new UnbanCommand(this.server)).setDescription("Unbans a player from the server."));
 
-        this.registerCommand(null,new Command("op",new opCommand(this.server)).setDescription("Gives Operator status to a player."));
-        this.registerCommand(null,new Command("deop",new deopCommand(this.server)).setDescription("Takes Operator status from a player."));
+        this.registerCommand(null, new Command("op", new OpCommand(this.server)).setDescription("Gives Operator status to a player."));
+        this.registerCommand(null, new Command("deop", new DeopCommand(this.server)).setDescription("Takes Operator status from a player."));
 
-        this.registerCommand(null,new Command("solid",new solidCommand(this.server)).setDescription("Toggles placing bedrock instead of stone."));
+        this.registerCommand(null, new Command("solid", new SolidCommand(this.server)).setDescription("Toggles placing bedrock instead of stone."));
 
-        this.registerCommand(null,new Command("broadcast",new broadcastCommand(this.server)).setDescription("Broadcasts a message."));
-        this.registerCommand(null,new Command("say",new sayCommand(this.server)).setDescription("Broadcasts a message."));
+        this.registerCommand(null, new Command("broadcast", new BroadcastCommand(this.server, "broadcast")).setDescription("Broadcasts a message."));
+        this.registerCommand(null, new Command("say", new BroadcastCommand(this.server, "say")).setDescription("Broadcasts a message."));
 
-        this.registerCommand(null,new Command("tp",new tpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
-        this.registerCommand(null,new Command("teleport",new tpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
+        this.registerCommand(null, new Command("tp", new TpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
+        this.registerCommand(null, new Command("teleport", new TpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
     }
 
-    public void registerCommand(Plugin pl,Command cmd) {
-        if(cmd==null) return;
+    public void registerCommand(Plugin pl, Command cmd) {
+        if (cmd == null) return;
         List<Command> list = new ArrayList<Command>();
         if (commands.containsKey(pl)) list = commands.get(pl);
         list.add(cmd);
-        commands.put(pl,list);
+        commands.put(pl, list);
     }
 
     // Irrelevant of plugins
@@ -58,6 +60,7 @@ public class CommandRegistry {
         }
         return null;
     }
+
     public List<Command> getCommands() {
         List<Command> list = new ArrayList<Command>();
         for (List<Command> cmdlist : commands.values()) {
@@ -65,6 +68,7 @@ public class CommandRegistry {
         }
         return list;
     }
+
     public void runCommand(CommandSource source, String cmd, String[] args) {
         boolean hit = false;
         for (List<Command> list : commands.values()) {
@@ -89,13 +93,15 @@ public class CommandRegistry {
         }
         return null;
     }
+
     public List<Command> getCommands(Plugin pl) {
         if (commands.containsKey(pl)) {
             return commands.get(pl);
         }
         return new ArrayList<Command>();
     }
-    public void runCommand(Plugin pl,CommandSource source, String cmd, String[] args) {
+
+    public void runCommand(Plugin pl, CommandSource source, String cmd, String[] args) {
         boolean hit = false;
         if (commands.containsKey(pl)) {
             for (Command command : commands.get(pl)) {
@@ -109,5 +115,7 @@ public class CommandRegistry {
         if (!hit) source.sendMessage("Unknown command!");
     }
 
-    public Server getServer() { return this.server; }
+    public Server getServer() {
+        return this.server;
+    }
 }

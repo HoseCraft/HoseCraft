@@ -7,10 +7,10 @@ import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
 
-public class tpCommand implements CommandInterface {
+public class TpCommand implements CommandInterface {
     private Server server;
 
-    public tpCommand(Server server) {
+    public TpCommand(Server server) {
         this.server = server;
     }
 
@@ -38,15 +38,15 @@ public class tpCommand implements CommandInterface {
                         if (dp != null && sp != null) {
                             sp.teleport(dp.getLocation());
                         } else {
-                            if (dp == null) source.sendMessage("No such player "+destPlayer);
-                            if (sp == null) source.sendMessage("No such player "+srcPlayer);
+                            if (dp == null) source.sendMessage("No such player " + destPlayer);
+                            if (sp == null) source.sendMessage("No such player " + srcPlayer);
                         }
                     } else if (args.length == 3) {
                         // Teleport to XYZ
                         double x = Double.valueOf(args[0]);
                         double y = Double.valueOf(args[1]);
                         double z = Double.valueOf(args[2]);
-                        Location destination = new Location(src.getLocation().getLevel(),x*32,y*32,z*32);
+                        Location destination = new Location(src.getLocation().getLevel(), x * 32, y * 32, z * 32);
                         src.teleport(destination);
                     } else if (args.length == 4) {
                         // Teleport a player to an XYZ.
@@ -56,12 +56,12 @@ public class tpCommand implements CommandInterface {
                         double z = Double.valueOf(args[3]);
 
                         if (subject != null) {
-                            Location destination = new Location(src.getLocation().getLevel(), x*32, y*32, z*32);
+                            Location destination = new Location(src.getLocation().getLevel(), x * 32, y * 32, z * 32);
                             subject.teleport(destination);
                         }
                     }
                 } else {
-                    source.sendMessage(Chat.YELLOW+"Syntax: /teleport <player|X> [destPlayer|destY|destX] [destZ|destY] [destZ]");
+                    source.sendMessage(Chat.YELLOW + "Syntax: /teleport <player|X> [destPlayer|destY|destX] [destZ|destY] [destZ]");
                 }
             } else {
                 source.sendMessage("You can't teleport from the console!");

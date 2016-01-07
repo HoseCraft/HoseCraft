@@ -3,7 +3,6 @@ package com.infermc.hosecraft.server;
 import com.infermc.hosecraft.command.CommandRegistry;
 import com.infermc.hosecraft.logging.ServerLogger;
 import com.infermc.hosecraft.permissions.PermissionProvider;
-import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.plugins.PluginManager;
 import com.infermc.hosecraft.wrappers.ConfigSection;
 import com.infermc.hosecraft.wrappers.YamlConfiguration;
@@ -36,27 +35,39 @@ public class Server {
             hosecraft.load(input);
         }
         ConfigSection section = hosecraft.getRoot();
-        this.version = (Double) section.get("version",0.0);
-        this.flavour = section.getString("flavour","MISSINGNO");
+        this.version = (Double) section.get("version", 0.0);
+        this.flavour = section.getString("flavour", "MISSINGNO");
 
     }
+
     public ArrayList<Player> getPlayers() {
         return this.players;
     }
-    public PluginManager getPluginManager(){
+
+    public PluginManager getPluginManager() {
         return pluginManager;
     }
+
     public Logger getLogger() {
         return log;
     }
-    public Double getVersion() { return this.version; }
-    public String getFlavour() { return this.flavour; }
+
+    public Double getVersion() {
+        return this.version;
+    }
+
+    public String getFlavour() {
+        return this.flavour;
+    }
+
     public PermissionProvider getPermissionProvider() {
         return this.permissionProvider;
     }
+
     public void setPermissionProvider(PermissionProvider permissionProvider) {
         this.permissionProvider = permissionProvider;
     }
+
     public CommandRegistry getCommandRegistry() {
         return this.commandRegistry;
     }
@@ -67,9 +78,11 @@ public class Server {
         }
         return false;
     }
+
     public boolean isOnline(Player player) {
         return players.contains(player);
     }
+
     public Player getPlayer(String name) {
         for (Player p : players) {
             if (p.getName().equalsIgnoreCase(name)) return p;
@@ -80,6 +93,7 @@ public class Server {
     public boolean isBanned(String name) {
         return this.MC.h.c(name);
     }
+
     public boolean isBanned(Player player) {
         return isBanned(player.getName());
     }
@@ -87,13 +101,15 @@ public class Server {
     public boolean ban(Player p) {
         return ban(p.getName());
     }
+
     public boolean ban(String name) {
-        return MC.ban(name,null);
+        return MC.ban(name, null);
     }
 
     public boolean unban(Player p) {
         return unban(p.getName());
     }
+
     public boolean unban(String name) {
         if (this.MC.h.c(name)) {
             this.MC.h.b(name);
@@ -103,19 +119,26 @@ public class Server {
     }
 
     public boolean ban(Player p, String reason) {
-        return ban(p.getName(),reason);
-    }
-    public boolean ban(String name,String reason) {
-        return MC.ban(name,reason);
+        return ban(p.getName(), reason);
     }
 
-    public boolean kick(Player p) { return kick(p.getName()); }
+    public boolean ban(String name, String reason) {
+        return MC.ban(name, reason);
+    }
+
+    public boolean kick(Player p) {
+        return kick(p.getName());
+    }
+
     public boolean kick(String name) {
-        return MC.kick(name,null);
+        return MC.kick(name, null);
     }
 
-    public boolean kick(Player p, String reason) { return kick(p.getName(),reason); }
-    public boolean kick(String name,String reason) {
-        return MC.kick(name,reason);
+    public boolean kick(Player p, String reason) {
+        return kick(p.getName(), reason);
+    }
+
+    public boolean kick(String name, String reason) {
+        return MC.kick(name, reason);
     }
 }

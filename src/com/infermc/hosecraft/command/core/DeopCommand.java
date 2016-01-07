@@ -7,10 +7,10 @@ import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
 
 // Ops a player.
-public class deopCommand implements CommandInterface {
+public class DeopCommand implements CommandInterface {
     private Server server;
 
-    public deopCommand(Server server) {
+    public DeopCommand(Server server) {
         this.server = server;
     }
 
@@ -20,10 +20,10 @@ public class deopCommand implements CommandInterface {
             if (args.length >= 1) {
                 this.server.MC.deopPlayer(args[0]);
                 for (Player p : this.server.getPlayers()) {
-                    if (p.isOperator()) p.sendMessage(Chat.GRAY+source.getName()+" deopped "+args[0]);
+                    if (p.isOperator()) p.sendMessage(Chat.GRAY + source.getName() + " deopped " + args[0]);
                 }
             } else {
-                source.sendMessage(Chat.YELLOW+"Syntax: /deop <username>");
+                source.sendMessage(Chat.YELLOW + "Syntax: /deop <username>");
             }
             return true;
         }

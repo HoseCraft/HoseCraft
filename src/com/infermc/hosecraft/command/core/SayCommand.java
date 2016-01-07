@@ -6,9 +6,10 @@ import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
 
-public class sayCommand implements CommandInterface {
+public class SayCommand implements CommandInterface {
     private Server server;
-    public sayCommand(Server server) {
+
+    public SayCommand(Server server) {
         this.server = server;
     }
 
@@ -17,10 +18,10 @@ public class sayCommand implements CommandInterface {
         if (source.isOperator()) {
             if (args.length > 0) {
                 for (Player p : server.getPlayers()) {
-                    p.sendMessage(String.join(" ",args));
+                    p.sendMessage(String.join(" ", args));
                 }
             } else {
-                source.sendMessage(Chat.YELLOW+"Syntax: /broadcast <message>");
+                source.sendMessage(Chat.YELLOW + "Syntax: /broadcast <message>");
             }
             return true;
         }
