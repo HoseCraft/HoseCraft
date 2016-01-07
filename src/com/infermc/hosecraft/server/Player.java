@@ -10,14 +10,17 @@ public class Player implements CommandSource {
     private String displayname;
     private Location location;
     private HandleClient socket;
+    private boolean supportsExt;
 
-    public Player(Server srv, HandleClient sck, String uname) {
+    public Player(Server srv, HandleClient sck, String uname,boolean supportsExt) {
         this.server = srv;
         this.socket = sck;
         this.name = uname;
         this.displayname = uname;
+        this.supportsExt = supportsExt;
     }
 
+    public boolean supportsCPE() { return this.supportsExt; }
     public String getName() {
         return this.name;
     }

@@ -103,9 +103,12 @@ public final class HandleClient {
 				String var3 = ((String)var2[1]).trim();
 				String var8 = (String)var2[2];
 				char[] var4 = var3.toCharArray();
+				byte hasCPE = ((Byte) var2[3]).byteValue();
 
 				// Create the player.
-				this.player = new Player(this.k.HoseCraft,this,var3);
+				boolean extensionClient = false;
+				if (hasCPE == 66) extensionClient = true;
+				this.player = new Player(this.k.HoseCraft,this,var3,extensionClient);
 				this.k.HoseCraft.players.add(this.player);
 
 				for(int var5 = 0; var5 < var4.length; ++var5) {
