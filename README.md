@@ -7,7 +7,7 @@
 You may be wondering what in the hell HoseCraft is, well you're right to do so.  
 It's been a while since yet another Minecraft Server software appeared.
 
-However, that's no the case.  
+However, that's not the case.  
 HoseCraft is a server software for Minecraft Classic with the bonus feature of actually being the original Minecraft Classic Server.
 
 You read right, at the core of HoseCraft is the original Minecraft Classic server notch wrote many eons ago. With a lovingly crafted plugin API ontop.  
