@@ -6,7 +6,6 @@ import com.infermc.hosecraft.server.Location;
 import com.infermc.hosecraft.server.Player;
 
 public class PlayerMoveEvent extends Event implements Cancellable {
-
     // Event Template
     private boolean cancelled = false;
 

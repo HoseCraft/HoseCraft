@@ -1,6 +1,13 @@
 package com.infermc.hosecraft.events;
 
-public class Event {
+public abstract class Event {
 
-    private Boolean cancelled = false;
+    /**
+     * Gets the Event's name
+     *
+     * @return name
+     */
+    private String getName() {
+        return this.getClass().getSimpleName();
+    }
 }

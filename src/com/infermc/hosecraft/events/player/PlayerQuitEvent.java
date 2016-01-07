@@ -4,7 +4,6 @@ import com.infermc.hosecraft.events.Event;
 import com.infermc.hosecraft.server.Player;
 
 public class PlayerQuitEvent extends Event {
-
     private Player player;
     private String quitMessage;
 
