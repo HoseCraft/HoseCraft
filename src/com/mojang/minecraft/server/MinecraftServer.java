@@ -3,6 +3,7 @@ package com.mojang.minecraft.server;
 import com.infermc.hosecraft.command.CommandSource;
 import com.infermc.hosecraft.command.ConsoleSource;
 import com.infermc.hosecraft.plugins.Plugin;
+import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 import com.mojang.minecraft.level.LevelLoader;
 import com.mojang.minecraft.level.generator.LevelGenerator;
@@ -56,7 +57,6 @@ public class MinecraftServer implements Runnable {
 	public String heartbeatURL;
 	public String worldName;
 	public String worldType;
-
 	public MinecraftServer() {
 		this.j = new GenerateMD5(this.w);
 		this.k = false;
@@ -464,6 +464,7 @@ public class MinecraftServer implements Runnable {
 	}
 
 	public final void a(HandleClient var1, String var2) {
+        String fullCommand = var2;
 		while(var2.startsWith("/")) {
 			var2 = var2.substring(1);
 		}
@@ -476,6 +477,7 @@ public class MinecraftServer implements Runnable {
 			source = new ConsoleSource(this.HoseCraft);
 		} else {
 			source = var1.player;
+            this.a.info(var1.player.getName()+": "+fullCommand);
 		}
 		this.HoseCraft.getCommandRegistry().runCommand(source,var3[0],args);
 		return;
@@ -490,18 +492,18 @@ public class MinecraftServer implements Runnable {
 		a.info((var1 == null?"[console]":var1.b) + " admins: " + var2);
 		if (var1 == null || var1.player.isOperator()) {
 			if (var3[0].toLowerCase().equals("ban") && var3.length > 1) {
-				this.e(var3[1]);
+				this.e(var3[1]); // DONE
 			} else if (var3[0].toLowerCase().equals("kick") && var3.length > 1) {
-				this.d(var3[1]);
+				this.d(var3[1]); // DONE
 			} else if (var3[0].toLowerCase().equals("banip") && var3.length > 1) {
-				this.h(var3[1]);
+				this.h(var3[1]); // AWAITING
 			} else if (var3[0].toLowerCase().equals("unban") && var3.length > 1) {
 				String var5 = var3[1];
-				this.h.b(var5);
+				this.h.b(var5); // DONE
 			} else if (var3[0].toLowerCase().equals("op") && var3.length > 1) {
-				this.f(var3[1]);
+				this.f(var3[1]); // DONE
 			} else if (var3[0].toLowerCase().equals("deop") && var3.length > 1) {
-				this.g(var3[1]);
+				this.g(var3[1]); // DONE
 			} else if (var3[0].toLowerCase().equals("setspawn")) {
 				if (var1 != null) {
 					this.c.setSpawnPos(var1.d / 32, var1.e / 32, var1.f / 32, (float) (var1.h * 320 / 256));
@@ -510,6 +512,7 @@ public class MinecraftServer implements Runnable {
 				}
 			} else {
 				if (var3[0].toLowerCase().equals("solid")) {
+					// Done
 					if (var1 != null) {
 						var1.i = !var1.i;
 						if (var1.i) {
@@ -522,16 +525,19 @@ public class MinecraftServer implements Runnable {
 					}
 				} else {
 					if (var3[0].toLowerCase().equals("broadcast") && var3.length > 1) {
+						// Done
 						this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var2.substring("broadcast ".length()).trim()});
 						return;
 					}
 
 					if (var3[0].toLowerCase().equals("say") && var3.length > 1) {
+						// Done
 						this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var2.substring("say ".length()).trim()});
 						return;
 					}
 
 					if ((var3[0].toLowerCase().equals("teleport") || var3[0].toLowerCase().equals("tp")) && var3.length > 1) {
+						// Done
 						if (var1 == null) {
 							a.info("Can\'t teleport from console!");
 							return;
@@ -586,7 +592,7 @@ public class MinecraftServer implements Runnable {
 		return this.n;
 	}
 
-	private void d(String var1) {
+	public boolean kick(String var1,String reason) {
 		boolean var2 = false;
 		Iterator var3 = this.n.iterator();
 
@@ -594,7 +600,11 @@ public class MinecraftServer implements Runnable {
 			HandleClient var4;
 			if((var4 = (HandleClient)var3.next()).b.equalsIgnoreCase(var1)) {
 				var2 = true;
-				var4.a("You were kicked");
+				if (reason == null) {
+					var4.a("You were kicked");
+				} else {
+					var4.a("Kicked: "+reason);
+				}
 			}
 		}
 
@@ -602,28 +612,40 @@ public class MinecraftServer implements Runnable {
 			this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var1 + " got kicked from the server!"});
 		}
 
+		// If they were online and kicked
+		return var2;
 	}
 
-	private void e(String var1) {
-		this.h.a(var1);
+	public boolean ban(String var1,String reason) {
+		boolean res = false;
 		boolean var2 = false;
+		if (!this.h.c(var1)) {
+			this.h.a(var1);
+			res=true;
+		}
+
 		Iterator var3 = this.n.iterator();
 
 		while(var3.hasNext()) {
 			HandleClient var4;
 			if((var4 = (HandleClient)var3.next()).b.equalsIgnoreCase(var1)) {
 				var2 = true;
-				var4.a("You were banned");
+				res = true;
+				if (reason == null) {
+					var4.a("You were banned");
+				} else {
+					var4.a("Banned: "+reason);
+				}
 			}
 		}
 
 		if(var2) {
 			this.a(PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), var1 + " got banned!"});
 		}
-
+		return res;
 	}
 
-	private void f(String var1) {
+	public void opPlayer(String var1) {
 		this.g.a(var1);
 		Iterator var3 = this.n.iterator();
 
@@ -637,7 +659,7 @@ public class MinecraftServer implements Runnable {
 
 	}
 
-	private void g(String var1) {
+	public void deopPlayer(String var1) {
 		this.g.b(var1);
 		Iterator var3 = this.n.iterator();
 
@@ -652,7 +674,7 @@ public class MinecraftServer implements Runnable {
 
 	}
 
-	private void h(String var1) {
+	private void ipBan(String var1) {
 		boolean var2 = false;
 		String var3 = "";
 		Iterator var4 = this.n.iterator();

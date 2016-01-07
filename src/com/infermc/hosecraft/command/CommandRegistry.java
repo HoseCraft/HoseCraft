@@ -1,9 +1,6 @@
 package com.infermc.hosecraft.command;
 
-import com.infermc.hosecraft.command.core.helpCommand;
-import com.infermc.hosecraft.command.core.listCommand;
-import com.infermc.hosecraft.command.core.pluginCommand;
-import com.infermc.hosecraft.command.core.versionCommand;
+import com.infermc.hosecraft.command.core.*;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Server;
 
@@ -17,12 +14,29 @@ public class CommandRegistry {
     public CommandRegistry(Server server) {
         this.server = server;
 
-        // Register our own command.
+        // Register our own commands.
         this.registerCommand(null,new Command("version",new versionCommand(this.server)).setDescription("Returns the Server version."));
         this.registerCommand(null,new Command("list",new listCommand(this.server)).setDescription("Lists all online players."));
         this.registerCommand(null,new Command("help",new helpCommand(this.server)).setDescription("Lists all known command."));
+
         this.registerCommand(null,new Command("pl",new pluginCommand(this.server)).setDescription("Lists all loaded plugins."));
         this.registerCommand(null,new Command("plugins",new pluginCommand(this.server)).setDescription("Lists all loaded plugins."));
+
+        // Register original classic commands.
+        this.registerCommand(null,new Command("ban",new banCommand(this.server)).setDescription("Bans a player from the server."));
+        this.registerCommand(null,new Command("kick",new kickCommand(this.server)).setDescription("Kicks a player from the server."));
+        this.registerCommand(null,new Command("unban",new unbanCommand(this.server)).setDescription("Unbans a player from the server."));
+
+        this.registerCommand(null,new Command("op",new opCommand(this.server)).setDescription("Gives Operator status to a player."));
+        this.registerCommand(null,new Command("deop",new deopCommand(this.server)).setDescription("Takes Operator status from a player."));
+
+        this.registerCommand(null,new Command("solid",new solidCommand(this.server)).setDescription("Toggles placing bedrock instead of stone."));
+
+        this.registerCommand(null,new Command("broadcast",new broadcastCommand(this.server)).setDescription("Broadcasts a message."));
+        this.registerCommand(null,new Command("say",new sayCommand(this.server)).setDescription("Broadcasts a message."));
+
+        this.registerCommand(null,new Command("tp",new tpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
+        this.registerCommand(null,new Command("teleport",new tpCommand(this.server)).setDescription("Teleports you or a player to another player or position."));
     }
 
     public void registerCommand(Plugin pl,Command cmd) {

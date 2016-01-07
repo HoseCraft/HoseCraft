@@ -22,13 +22,13 @@ public class helpCommand implements CommandInterface {
         if (args.length >= 1) {
             pl = server.getPluginManager().getPlugin(args[0]);
             if (pl == null) {
-                source.sendMessage("Unknown plugin name!");
+                source.sendMessage(Chat.RED+"Unknown plugin name!");
                 return true;
             }
             plname = pl.getName();
         }
-        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands().size()+" total known command.");
-        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands(pl).size()+" "+plname+" command.");
+        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands().size()+" total known commands.");
+        source.sendMessage(Chat.YELLOW+"There are "+cmdReg.getCommands(pl).size()+" "+plname+" commands.");
         for (Command cmd : cmdReg.getCommands(pl)) {
             source.sendMessage(Chat.YELLOW+"/"+cmd.getName()+" - "+cmd.getDescription());
         }

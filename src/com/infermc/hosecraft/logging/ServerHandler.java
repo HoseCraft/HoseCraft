@@ -2,9 +2,6 @@ package com.infermc.hosecraft.logging;
 
 import java.util.logging.*;
 
-/**
- * Created by Thomas on 03/01/2016.
- */
 public class ServerHandler extends Handler {
     @Override
     public void publish(LogRecord record)

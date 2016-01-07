@@ -26,18 +26,20 @@ public final class ConfigurationFile {
       this.a();
    }
 
+   // Adds line.
    public final void a(String var1) {
       var1 = var1.toLowerCase();
       this.d.add(var1);
       this.b();
    }
 
+   // Removes line
    public final void b(String var1) {
       var1 = var1.toLowerCase();
       this.d.remove(var1);
       this.b();
    }
-
+   // Checks for the existence
    public final boolean c(String var1) {
       var1 = var1.toLowerCase();
       return this.d.contains(var1);

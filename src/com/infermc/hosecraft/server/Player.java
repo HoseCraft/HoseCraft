@@ -69,4 +69,21 @@ public class Player implements CommandSource {
     public boolean hasPermission(String permission) {
         return this.server.getPermissionProvider().hasPermission(this,permission);
     }
+
+    public boolean isBanned() {
+        return this.server.isBanned(this.name);
+    }
+
+    public boolean ban() {
+        return this.server.ban(this.name,null);
+    }
+    public boolean ban(String reason) {
+        return this.server.ban(this.name,reason);
+    }
+    public boolean kick() {
+        return this.server.kick(this.name,null);
+    }
+    public boolean kick(String reason) {
+        return this.server.kick(this.name,reason);
+    }
 }

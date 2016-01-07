@@ -57,7 +57,7 @@ public class JavaPlugin implements Plugin {
     protected final void init(String name,Server server) {
         this.name = name;
         this.serverinstance = server;
-        this.logger = server.getLogger();
+        this.logger = server.loggerManager.createLogger(name);
         this.dataFolder = new File(serverinstance.MC.workingDirectory+"/plugins/"+this.name+"/");
     }
 }

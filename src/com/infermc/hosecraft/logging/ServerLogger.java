@@ -9,10 +9,10 @@ import java.util.logging.*;
 public class ServerLogger {
     private Logger logger;
     private FileHandler fh = null;
+    private ConsoleHandler ch = null;
+    private TimestampFormatter formatter = new TimestampFormatter();
 
     public ServerLogger() {
-        TimestampFormatter formatter = new TimestampFormatter();
-
         File logDir = new File("logs/");
         if (!logDir.exists()) logDir.mkdirs();
         try {
@@ -20,11 +20,12 @@ public class ServerLogger {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ServerHandler ch = new ServerHandler();
+        if (fh != null) {
+            fh.setLevel(Level.ALL);
+            fh.setFormatter(formatter);
+        }
 
-        fh.setLevel(Level.ALL);
-        fh.setFormatter(formatter);
-
+        ch = new ConsoleHandler();
         ch.setLevel(Level.ALL);
         ch.setFormatter(formatter);
 
@@ -34,6 +35,7 @@ public class ServerLogger {
     public Logger createLogger(String name) {
         Logger l = Logger.getLogger(name);
         if (fh != null) l.addHandler(this.fh);
+        if (ch != null) l.addHandler(this.ch);
         return l;
     }
 

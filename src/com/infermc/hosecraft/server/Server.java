@@ -3,6 +3,7 @@ package com.infermc.hosecraft.server;
 import com.infermc.hosecraft.command.CommandRegistry;
 import com.infermc.hosecraft.logging.ServerLogger;
 import com.infermc.hosecraft.permissions.PermissionProvider;
+import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.plugins.PluginManager;
 import com.infermc.hosecraft.wrappers.ConfigSection;
 import com.infermc.hosecraft.wrappers.YamlConfiguration;
@@ -58,5 +59,62 @@ public class Server {
     }
     public CommandRegistry getCommandRegistry() {
         return this.commandRegistry;
+    }
+
+    public boolean isOnline(String name) {
+        for (Player p : players) {
+            if (p.getName().equalsIgnoreCase(name)) return true;
+        }
+        return false;
+    }
+    public boolean isOnline(Player player) {
+        return players.contains(player);
+    }
+    public Player getPlayer(String name) {
+        for (Player p : players) {
+            if (p.getName().equalsIgnoreCase(name)) return p;
+        }
+        return null;
+    }
+
+    public boolean isBanned(String name) {
+        return this.MC.h.c(name);
+    }
+    public boolean isBanned(Player player) {
+        return isBanned(player.getName());
+    }
+
+    public boolean ban(Player p) {
+        return ban(p.getName());
+    }
+    public boolean ban(String name) {
+        return MC.ban(name,null);
+    }
+
+    public boolean unban(Player p) {
+        return unban(p.getName());
+    }
+    public boolean unban(String name) {
+        if (this.MC.h.c(name)) {
+            this.MC.h.b(name);
+        }
+        return false;
+    }
+
+    public boolean ban(Player p, String reason) {
+        return ban(p.getName(),reason);
+    }
+    public boolean ban(String name,String reason) {
+        return MC.ban(name,reason);
+    }
+
+    public boolean kick(Player p) { return kick(p.getName()); }
+    public boolean kick(String name) {
+        return MC.kick(name,null);
+    }
+
+    public boolean kick(Player p, String reason) { return kick(p.getName(),reason); }
+    public boolean kick(String name,String reason) {
+        return MC.kick(name,reason);
     }
 }
