@@ -12,7 +12,7 @@ public class Player implements CommandSource {
     private HandleClient socket;
     private boolean supportsExt;
 
-    public Player(Server srv, HandleClient sck, String uname,boolean supportsExt) {
+    public Player(Server srv, HandleClient sck, String uname, boolean supportsExt) {
         this.server = srv;
         this.socket = sck;
         this.name = uname;
@@ -20,7 +20,10 @@ public class Player implements CommandSource {
         this.supportsExt = supportsExt;
     }
 
-    public boolean supportsCPE() { return this.supportsExt; }
+    public boolean supportsCPE() {
+        return this.supportsExt;
+    }
+
     public String getName() {
         return this.name;
     }

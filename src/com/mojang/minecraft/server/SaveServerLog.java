@@ -7,12 +7,12 @@ import java.util.logging.StreamHandler;
 
 final class SaveServerLog extends StreamHandler {
 
-   SaveServerLog(OutputStream var1, Formatter var2) {
-      super(var1, var2);
-   }
+    SaveServerLog(OutputStream var1, Formatter var2) {
+        super(var1, var2);
+    }
 
-   public final synchronized void publish(LogRecord var1) {
-      super.publish(var1);
-      this.flush();
-   }
+    public final synchronized void publish(LogRecord var1) {
+        super.publish(var1);
+        this.flush();
+    }
 }
