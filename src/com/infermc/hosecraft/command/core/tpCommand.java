@@ -46,7 +46,7 @@ public class tpCommand implements CommandInterface {
                         double x = Double.valueOf(args[0]);
                         double y = Double.valueOf(args[1]);
                         double z = Double.valueOf(args[2]);
-                        Location destination = new Location(src.getLocation().getLevel(),x,y,z);
+                        Location destination = new Location(src.getLocation().getLevel(),x*32,y*32,z*32);
                         src.teleport(destination);
                     } else if (args.length == 4) {
                         // Teleport a player to an XYZ.
@@ -56,7 +56,7 @@ public class tpCommand implements CommandInterface {
                         double z = Double.valueOf(args[3]);
 
                         if (subject != null) {
-                            Location destination = new Location(src.getLocation().getLevel(), x, y, z);
+                            Location destination = new Location(src.getLocation().getLevel(), x*32, y*32, z*32);
                             subject.teleport(destination);
                         }
                     }

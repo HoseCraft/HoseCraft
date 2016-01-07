@@ -2,6 +2,7 @@ package com.mojang.minecraft.server;
 
 import com.infermc.hosecraft.command.CommandSource;
 import com.infermc.hosecraft.command.ConsoleSource;
+import com.infermc.hosecraft.events.player.PlayerKickEvent;
 import com.infermc.hosecraft.plugins.Plugin;
 import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
@@ -595,6 +596,11 @@ public class MinecraftServer implements Runnable {
 	public boolean kick(String var1,String reason) {
 		boolean var2 = false;
 		Iterator var3 = this.n.iterator();
+
+		PlayerKickEvent ev = new PlayerKickEvent(this.HoseCraft.getPlayer(var1),reason);
+		this.HoseCraft.getPluginManager().callEvent(ev);
+		if (ev.isCancelled()) return false;
+		reason = ev.getReason();
 
 		while(var3.hasNext()) {
 			HandleClient var4;

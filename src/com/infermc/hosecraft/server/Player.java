@@ -55,7 +55,7 @@ public class Player implements CommandSource {
 
         // Tell the player themselves.
         int X = (int) (this.location.getX()*32);
-        int Y = (int) (this.location.getY()*32)+51+22;
+        int Y = (int) (this.location.getY()*32)+51;
         int Z = (int) (this.location.getZ()*32);
 
         socket.b(PacketType.POSITION_ROTATION, new Object[]{Integer.valueOf(-1), Integer.valueOf(X), Integer.valueOf(Y), Integer.valueOf(Z), Byte.valueOf((byte) dest.getYaw()), Byte.valueOf((byte) dest.getPitch())});

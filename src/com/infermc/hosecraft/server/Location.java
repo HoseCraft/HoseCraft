@@ -44,6 +44,7 @@ public class Location {
     public Level getLevel() { return this.lvl; }
 
     public Block getBlock() { return Block.blocks[this.lvl.getTile(this.getBlockX(),this.getBlockY(),this.getBlockZ())]; }
+    public void setBlock(Block block) { this.lvl.setTile(this.getBlockX(),this.getBlockY(),this.getBlockZ(),block.id); }
 
     public Location clone() { return new Location(this.lvl,this.X,this.Y,this.Z,this.yaw,this.pitch); }
 

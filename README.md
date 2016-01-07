@@ -37,8 +37,6 @@ Each time we hit a major version, which can only be done officially, contributo
 
 Due to the project being in its infancy stages (As of writing, about 4-5 days old) theres a lot of stuff we plan to do. There's also a fair bit to get done.
 
-*   Add PlayerQuitEvent - When a player quits of their own accord.
-*   Add PlayerKickEvent - When the player is kicked (Quit event doesn't fire)
 *   Add PlayerBannedEvent - When the player is banned and kicked (Doesnt fire Quit but does fire Kick with ban reason)
 *   Add PlayerOppedEvent - When a player is given OP
 *   Add PlayerDeoppedEvent - When a player has OP removed.
