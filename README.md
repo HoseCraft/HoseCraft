@@ -1,4 +1,4 @@
-# HoseCraft
+# HoseCraft [![Build Status](http://creativebuild.co:8080/buildStatus/icon?job=HoseCraft)](http://creativebuild.co:8080/job/HoseCraft/)
 
 ### The newest kid on the block.
 
