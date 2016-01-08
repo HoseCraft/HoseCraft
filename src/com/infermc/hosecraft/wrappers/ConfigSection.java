@@ -1,16 +1,17 @@
 package com.infermc.hosecraft.wrappers;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ConfigSection {
-    private Map dataMap;
+    private HashMap<Object,Object> dataMap;
 
     public ConfigSection() {
-        this.dataMap = Collections.<Object, Object>emptyMap();
+        this.dataMap = new HashMap<Object, Object>();
     }
 
-    public ConfigSection(Map data) {
+    public ConfigSection(HashMap data) {
         this.dataMap = data;
     }
 
@@ -20,9 +21,10 @@ public class ConfigSection {
     }
 
     // Getters.
-    public Map get() {
+    public HashMap<Object,Object> get() {
         return this.dataMap;
     }
+    //public HashMap<String path, HashMap> getSection(String path) { return new ConfigSection(this.dataMap.get(path));  }
 
     public Object get(String path) {
         if (dataMap == null) return null;

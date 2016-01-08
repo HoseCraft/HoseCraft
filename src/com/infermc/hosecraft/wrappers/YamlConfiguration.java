@@ -4,15 +4,16 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 // Similar to Bukkit/Spigots class of the same name. Although much more simpler.
 public class YamlConfiguration {
-    private Map dataMap;
+    private HashMap<Object, Object> dataMap;
     private Yaml yml = new Yaml();
 
     public YamlConfiguration() {
-        this.dataMap = Collections.emptyMap();
+        this.dataMap = new HashMap<Object, Object>();
     }
 
     public YamlConfiguration(File file) {
@@ -23,7 +24,7 @@ public class YamlConfiguration {
         InputStream stream = null;
         try {
             stream = new FileInputStream(file.toString());
-            this.dataMap = (Map) yml.load(stream);
+            this.dataMap = new HashMap<Object,Object>((Map) yml.load(stream));
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -32,7 +33,7 @@ public class YamlConfiguration {
     }
 
     public boolean load(InputStream stream) {
-        this.dataMap = (Map) yml.load(stream);
+        this.dataMap = new HashMap<Object, Object>((Map) yml.load(stream));
         return true;
     }
 
@@ -41,7 +42,7 @@ public class YamlConfiguration {
         if (dataMap.containsKey(path)) {
             Object section = dataMap.get(path);
             if (section instanceof Map) {
-                return new ConfigSection((Map) section);
+                return new ConfigSection(new HashMap((Map) section));
             } else {
 
             }
