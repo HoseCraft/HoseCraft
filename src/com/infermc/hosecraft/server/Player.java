@@ -59,12 +59,12 @@ public class Player implements CommandSource {
             return;
         }
         if (this.location == null) {
-            this.location = dest;
+            this.location = dest.clone();
             return;
         }
 
         // Change their Location
-        this.location = dest;
+        this.location = dest.clone();
 
 
         // Tell the player themselves.

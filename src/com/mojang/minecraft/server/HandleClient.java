@@ -305,10 +305,21 @@ public final class HandleClient {
                     var4 = var10003;
                     var3 = var10002;
                     var13 = var10001;
-                    if (var13 == this.d && var3 == this.e && var4 == this.f && var5 == this.h && var6 == this.g) {
+
+                    /*
+                    this.d = var13; //x
+                    this.e = var3; // y
+                    this.f = var4; // z
+                    */
+                    /*
+                    this.h = var5; // Yaw
+                    this.g = var6; // Pitch
+                    */
+
+                    if (var13 == this.player.getLocation().getX() && var3 == this.player.getLocation().getY() && var4 == this.player.getLocation().getZ() && var5 == this.player.getLocation().getYaw() && var6 == this.player.getLocation().getPitch()) {
                         var10000 = true;
                     } else {
-                        boolean var21 = var13 == this.d && var3 == this.e && var4 == this.f;
+                        boolean var21 = var13 == this.player.getLocation().getX() && var3 == this.player.getLocation().getY() && var4 == this.player.getLocation().getZ();
                         if (this.t++ % 2 == 0) {
                             int var22 = var13 - (int) this.player.getLocation().getX();
                             int var23 = var3 - (int) this.player.getLocation().getY();
