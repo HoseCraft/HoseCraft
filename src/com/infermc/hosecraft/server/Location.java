@@ -19,6 +19,7 @@ public class Location {
         this.Y = y;
         this.Z = z;
     }
+
     public Location(Level l, double x, double y, double z, float yw, float p) {
         this.lvl = l;
         this.X = x;
@@ -29,27 +30,62 @@ public class Location {
         this.pitch = p;
     }
 
-    public double getX() { return this.X/32; }
-    public int getBlockX() { return (int) Math.floor(this.X/32); }
+    public double getX() {
+        return this.X / 32;
+    }
 
-    public double getY() { return this.Y/32; }
-    public int getBlockY() { return (int) Math.floor(this.Y/32); }
+    public int getBlockX() {
+        return (int) Math.floor(this.X / 32);
+    }
 
-    public double getZ() { return this.Z/32; }
-    public int getBlockZ() { return (int) Math.floor(this.Z/32); }
+    public double getY() {
+        return this.Y / 32;
+    }
 
-    public float getYaw() { return this.yaw; }
-    public float getPitch() { return this.pitch; }
+    public int getBlockY() {
+        return (int) Math.floor(this.Y / 32);
+    }
 
-    public Level getLevel() { return this.lvl; }
+    public double getZ() {
+        return this.Z / 32;
+    }
 
-    public Block getBlock() { return Block.blocks[this.lvl.getTile(this.getBlockX(),this.getBlockY(),this.getBlockZ())]; }
-    public void setBlock(Block block) { this.lvl.setTile(this.getBlockX(),this.getBlockY(),this.getBlockZ(),block.id); }
+    public int getBlockZ() {
+        return (int) Math.floor(this.Z / 32);
+    }
 
-    public Location clone() { return new Location(this.lvl,this.X,this.Y,this.Z,this.yaw,this.pitch); }
+    public float getYaw() {
+        return this.yaw;
+    }
 
-    public void setX(double x) { this.X = x; }
-    public void setY(double y) { this.Y = y; }
+    public float getPitch() {
+        return this.pitch;
+    }
+
+    public Level getLevel() {
+        return this.lvl;
+    }
+
+    public Block getBlock() {
+        return Block.blocks[this.lvl.getTile(this.getBlockX(), this.getBlockY(), this.getBlockZ())];
+    }
+
+    public void setBlock(Block block) {
+        this.lvl.setTile(this.getBlockX(), this.getBlockY(), this.getBlockZ(), block.id);
+    }
+
+    public Location clone() {
+        return new Location(this.lvl, this.X, this.Y, this.Z, this.yaw, this.pitch);
+    }
+
+    public void setX(double x) {
+        this.X = x;
+    }
+
+    public void setY(double y) {
+        this.Y = y;
+    }
+
     public void setZ(double z) {
         this.Z = z;
     }
@@ -57,9 +93,12 @@ public class Location {
     public void setYaw(float yw) {
         this.yaw = yw;
     }
+
     public void setPitch(float p) {
         this.pitch = p;
     }
 
-    public void setLevel(Level lvl) { this.lvl = lvl; }
+    public void setLevel(Level lvl) {
+        this.lvl = lvl;
+    }
 }

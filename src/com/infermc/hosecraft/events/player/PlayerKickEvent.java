@@ -17,9 +17,11 @@ public class PlayerKickEvent extends Event implements Cancellable {
     public Player getPlayer() {
         return this.player;
     }
+
     public String getReason() {
         return this.reason;
     }
+
     public void setReason(String reason) {
         this.reason = reason;
     }

@@ -7,15 +7,16 @@ public class ConfigSection {
     private Map dataMap;
 
     public ConfigSection() {
-        this.dataMap = Collections.<Object,Object>emptyMap();
+        this.dataMap = Collections.<Object, Object>emptyMap();
     }
+
     public ConfigSection(Map data) {
         this.dataMap = data;
     }
 
     // Setter
-    public void set(String path,Object obj) {
-        dataMap.put(path,obj);
+    public void set(String path, Object obj) {
+        dataMap.put(path, obj);
     }
 
     // Getters.
@@ -31,6 +32,7 @@ public class ConfigSection {
         }
         return null;
     }
+
     public Object get(String path, Object def) {
         Object res = get(path);
         if (res == null) {
@@ -49,6 +51,7 @@ public class ConfigSection {
         }
         return null;
     }
+
     public String getString(String path, String def) {
         String res = getString(path);
         if (res == null) {

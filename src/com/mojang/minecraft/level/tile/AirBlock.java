@@ -5,10 +5,14 @@ public class AirBlock extends Block {
         super(var1);
     }
 
-    public final boolean b() { return false; }
+    public final boolean b() {
+        return false;
+    }
+
     public final boolean c() {
         return false;
     }
+
     public final boolean update() {
         return false;
     }

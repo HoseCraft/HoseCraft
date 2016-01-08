@@ -15,24 +15,30 @@ public class JavaPlugin implements Plugin {
     public JavaPlugin() {
         ClassLoader classLoader = getClass().getClassLoader();
         if (!(classLoader instanceof PluginClassLoader)) {
-            throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName()+" but got "+classLoader.getClass().getName());
+            throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " but got " + classLoader.getClass().getName());
         }
-        ((PluginClassLoader)classLoader).initialize(this);
+        ((PluginClassLoader) classLoader).initialize(this);
     }
 
     public String getName() {
         return name;
     }
+
     public File getDataFolder() {
         return this.dataFolder;
     }
+
     public Logger getLogger() {
         return logger;
     }
+
     public Server getServer() {
         return this.serverinstance;
     }
-    public boolean isEnabled() { return this.enabled; }
+
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 
     public void setEnabled(boolean status) {
         this.enabled = status;
@@ -47,17 +53,19 @@ public class JavaPlugin implements Plugin {
     public void onLoad() {
         // Called when the plugin is loaded.
     }
+
     public void onEnable() {
         // Called when plugin is enabled.
     }
+
     public void onDisable() {
         // Called when plugin is disabled
     }
 
-    protected final void init(String name,Server server) {
+    protected final void init(String name, Server server) {
         this.name = name;
         this.serverinstance = server;
         this.logger = server.loggerManager.createLogger(name);
-        this.dataFolder = new File(serverinstance.MC.workingDirectory+"/plugins/"+this.name+"/");
+        this.dataFolder = new File(serverinstance.MC.workingDirectory + "/plugins/" + this.name + "/");
     }
 }

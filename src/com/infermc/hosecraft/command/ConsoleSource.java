@@ -7,7 +7,7 @@ public class ConsoleSource implements CommandSource {
     private Server server;
 
     public ConsoleSource(Server server) {
-        this.server=server;
+        this.server = server;
     }
 
     public void sendMessage(String msg) {

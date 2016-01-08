@@ -30,6 +30,7 @@ public class YamlConfiguration {
         }
         return false;
     }
+
     public boolean load(InputStream stream) {
         this.dataMap = (Map) yml.load(stream);
         return true;
@@ -47,21 +48,24 @@ public class YamlConfiguration {
         }
         return null;
     }
+
     public ConfigSection getRoot() {
         return new ConfigSection(dataMap);
     }
+
     public void setSection(String path, ConfigSection section) {
-        dataMap.put(path,section);
+        dataMap.put(path, section);
     }
 
     public void save(File file) throws IOException {
         Writer writer = new FileWriter(file);
-        yml.dump(dataMap,writer);
+        yml.dump(dataMap, writer);
         writer.close();
     }
+
     public void save(OutputStream input) throws IOException {
         Writer writer = new OutputStreamWriter(input);
-        yml.dump(dataMap,writer);
+        yml.dump(dataMap, writer);
         writer.close();
     }
 }

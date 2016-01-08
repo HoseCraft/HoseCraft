@@ -1,35 +1,29 @@
 package com.infermc.hosecraft.plugins;
 
 import com.infermc.hosecraft.events.*;
-import com.infermc.hosecraft.events.EventListener;
 import com.infermc.hosecraft.server.Server;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class PluginManager {
     private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
     private Server serverInstance;
 
-    public HashMap<Class<?>,HandlerList> listeners = new HashMap<Class<?>, HandlerList>();
+    public HashMap<Class<?>, HandlerList> listeners = new HashMap<Class<?>, HandlerList>();
 
     public PluginManager(Server si) {
         this.serverInstance = si;
     }
+
     public Server getServer() {
         return this.serverInstance;
     }
@@ -42,13 +36,16 @@ public class PluginManager {
         }
         return null;
     }
+
     public List<Plugin> getPlugins() {
         return plugins;
     }
+
     public void unloadPlugin(String name) {
         Plugin pl = getPlugin(name);
         if (pl != null) unloadPlugin(pl);
     }
+
     public void unloadPlugin(Plugin plClass) {
 
     }
@@ -75,7 +72,7 @@ public class PluginManager {
     public Plugin loadPlugin(File file) {
         PluginClassLoader loader = null;
         try {
-            loader = new PluginClassLoader(this.getClass().getClassLoader(),serverInstance,file);
+            loader = new PluginClassLoader(this.getClass().getClassLoader(), serverInstance, file);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -114,9 +111,9 @@ public class PluginManager {
                         handlers = listeners.get(c);
                     } else {
                         handlers = new HandlerList();
-                        listeners.put(c,handlers);
+                        listeners.put(c, handlers);
                     }
-                    EventListener el = new EventListener(plugin,m,listener);
+                    EventListener el = new EventListener(plugin, m, listener);
                     handlers.addListener(el);
                 }
             }

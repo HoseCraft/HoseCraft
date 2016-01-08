@@ -6,10 +6,10 @@ import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 
 // Toggles the players ability to place bedrock
-public class solidCommand implements CommandInterface {
+public class SolidCommand implements CommandInterface {
     private Server server;
 
-    public solidCommand(Server server) {
+    public SolidCommand(Server server) {
         this.server = server;
     }
 

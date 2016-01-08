@@ -6,21 +6,24 @@ import com.infermc.hosecraft.server.Player;
 import com.infermc.hosecraft.server.Server;
 import com.infermc.hosecraft.util.Chat;
 
-public class broadcastCommand implements CommandInterface {
+// Ops a player.
+public class DeopCommand implements CommandInterface {
     private Server server;
-    public broadcastCommand(Server server) {
+
+    public DeopCommand(Server server) {
         this.server = server;
     }
 
     @Override
     public boolean run(CommandSource source, String[] args) {
         if (source.isOperator()) {
-            if (args.length > 0) {
-                for (Player p : server.getPlayers()) {
-                    p.sendMessage(String.join(" ",args));
+            if (args.length >= 1) {
+                this.server.MC.deopPlayer(args[0]);
+                for (Player p : this.server.getPlayers()) {
+                    if (p.isOperator()) p.sendMessage(Chat.GRAY + source.getName() + " deopped " + args[0]);
                 }
             } else {
-                source.sendMessage(Chat.YELLOW+"Syntax: /broadcast <message>");
+                source.sendMessage(Chat.YELLOW + "Syntax: /deop <username>");
             }
             return true;
         }
