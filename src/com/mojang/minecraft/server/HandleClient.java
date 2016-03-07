@@ -262,7 +262,8 @@ public final class HandleClient {
                                 if (var7.getTile(var13, var3, var4) != Block.BEDROCK.id || this.k.g.c(this.b)) {
                                     int block = var7.getTile(var13, var3, var4);
                                     Block bk = Block.blocks[block];
-                                    BlockBreakEvent ev = new BlockBreakEvent(bk, this.player);
+                                    Location loc = new Location(this.player.getLocation().getLevel(),var13,var3,var4);
+                                    BlockBreakEvent ev = new BlockBreakEvent(bk, loc, this.player);
                                     this.k.HoseCraft.getPluginManager().callEvent(ev);
                                     if (!ev.isCancelled()) {
                                         var7.setTile(var13, var3, var4, 0);
@@ -275,7 +276,8 @@ public final class HandleClient {
                                 Block var18;
                                 if ((var18 = Block.blocks[var7.getTile(var13, var3, var4)]) == null || var18 == Block.WATER || var18 == Block.STATIONARY_WATER || var18 == Block.LAVA || var18 == Block.STATIONARY_LAVA) {
                                     Block bk = Block.blocks[var6];
-                                    BlockPlaceEvent ev = new BlockPlaceEvent(bk, this.player);
+                                    Location loc = new Location(this.player.getLocation().getLevel(),var13,var3,var4);
+                                    BlockPlaceEvent ev = new BlockPlaceEvent(bk, loc, this.player);
                                     this.k.HoseCraft.getPluginManager().callEvent(ev);
                                     if (!ev.isCancelled()) {
                                         if (this.i && var6 == Block.STONE.id) {
@@ -489,6 +491,7 @@ public final class HandleClient {
             var1.printStackTrace();
         }
         if (this.b != "") {
+            k.HoseCraft.players.remove(this.player);
             PlayerQuitEvent ev = new PlayerQuitEvent(this.player, this.player.getName() + " left the game");
             this.k.HoseCraft.getPluginManager().callEvent(ev);
             this.k.a(this, PacketType.CHAT_MESSAGE, new Object[]{Integer.valueOf(-1), ev.getMessage()});

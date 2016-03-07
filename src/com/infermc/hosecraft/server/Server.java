@@ -166,7 +166,6 @@ public class Server {
     }
     public LevelGenerator getLevelGenerator(String generator) {
         for (LevelGenerator lg : this.levelGenerators) {
-            this.log.info(lg.getClass().getSimpleName());
             if (lg.getClass().getSimpleName().equalsIgnoreCase(generator)) return lg;
         }
         return null;
