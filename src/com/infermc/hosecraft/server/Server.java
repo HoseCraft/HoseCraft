@@ -8,6 +8,9 @@ import com.infermc.hosecraft.permissions.PermissionProvider;
 import com.infermc.hosecraft.plugins.PluginManager;
 import com.infermc.hosecraft.wrappers.ConfigSection;
 import com.infermc.hosecraft.wrappers.YamlConfiguration;
+import com.mojang.minecraft.level.Level;
+import com.mojang.minecraft.level.generator.ClassicGenerator;
+import com.mojang.minecraft.level.generator.LevelGenerator;
 import com.mojang.minecraft.server.MinecraftServer;
 
 import java.io.InputStream;
@@ -19,6 +22,7 @@ public class Server {
     public Logger log;
     public MinecraftServer MC;
     public ArrayList<Player> players = new ArrayList<Player>();
+    public ArrayList<LevelGenerator> levelGenerators = new ArrayList<LevelGenerator>();
     public ServerLogger loggerManager = new ServerLogger();
     private PermissionProvider permissionProvider = new PermissionProvider();
     private CommandRegistry commandRegistry = new CommandRegistry(this);
@@ -39,6 +43,9 @@ public class Server {
         ConfigSection section = hosecraft.getRoot();
         this.version = (Double) section.get("version", 0.0);
         this.flavour = section.getString("flavour", "MISSINGNO");
+
+        // Add some internal level generators.
+        this.registerLevelGenerator(new ClassicGenerator(instance));
 
     }
 
@@ -152,5 +159,16 @@ public class Server {
         reason = ev.getReason();
 
         return MC.kick(name, reason);
+    }
+
+    public void registerLevelGenerator(LevelGenerator lg) {
+        this.levelGenerators.add(lg);
+    }
+    public LevelGenerator getLevelGenerator(String generator) {
+        for (LevelGenerator lg : this.levelGenerators) {
+            this.log.info(lg.getClass().getSimpleName());
+            if (lg.getClass().getSimpleName().equalsIgnoreCase(generator)) return lg;
+        }
+        return null;
     }
 }

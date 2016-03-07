@@ -56,7 +56,7 @@ public class MinecraftServer implements Runnable {
     public File workingDirectory = new File(System.getProperty("user.dir"));
     public String heartbeatURL;
     public String worldName;
-    public String worldType;
+    public String worldGenerator;
 
     public MinecraftServer() {
         this.j = new GenerateMD5(this.w);
@@ -81,7 +81,7 @@ public class MinecraftServer implements Runnable {
             this.y = Boolean.parseBoolean(this.q.getProperty("grow-trees", "false"));
             this.f = Boolean.parseBoolean(this.q.getProperty("admin-slot", "false"));
             this.worldName = this.q.getProperty("world-name", "world");
-            this.worldType = this.q.getProperty("world-type", "DEFAULT");
+            this.worldGenerator = this.q.getProperty("world-generator", "ClassicGenerator");
             this.heartbeatURL = this.q.getProperty("heartbeat", "http://www.minecraft.net/heartbeat.jsp");
             if (this.p < 1) {
                 this.p = 1;
@@ -102,7 +102,7 @@ public class MinecraftServer implements Runnable {
             this.q.setProperty("grow-trees", "" + this.y);
             this.q.setProperty("admin-slot", "" + this.f);
             this.q.setProperty("world-name", this.worldName);
-            this.q.setProperty("world-type", this.worldType);
+            this.q.setProperty("world-generator", this.worldGenerator);
             this.q.setProperty("heartbeat", "" + this.heartbeatURL);
         } catch (Exception var3) {
             var3.printStackTrace();
@@ -763,7 +763,11 @@ public class MinecraftServer implements Runnable {
 
             // Generating new level?
             if (var1.c == null) {
-                var1.c = new LevelGenerator(var1).generate("--", 256, 256, 64);
+                LevelGenerator levelGenerator = var1.HoseCraft.getLevelGenerator(var1.worldGenerator);
+                if (levelGenerator == null) {
+                    a.severe("Unable to load level generator '"+var1.worldGenerator+"'");
+                }
+                var1.c = levelGenerator.generate("--", 256, 256, 64);
             }
 
             try {

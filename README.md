@@ -33,14 +33,18 @@ Because its really fancy and what not. Every major version of HoseCraft has a co
 
 Each time we hit a major version, which can only be done officially, contributors can't kick up the version number to a new major. We'll reach out to the community/followers on IRC to suggest a new flavour, right now we'd like to try and keep to a naming theme.
 
+## Fun stuff... Whats implemented?
+
+*   Player events for Kick, Op, Deop, Ban and Move
+*   Block events for Break and Place
+*   Custom world generator support via plugins
+*   Custom commands via plugins
+*   Custom chat messages via plugins
+
 ## Boring stuff... Whats planned?
 
 Due to the project being in its infancy stages (As of writing, about 4-5 days old) theres a lot of stuff we plan to do. There's also a fair bit to get done.
 
-*   Add PlayerBannedEvent - When the player is banned and kicked (Doesnt fire Quit but does fire Kick with ban reason) ADDED!
-*   Add PlayerOppedEvent - When a player is given OP - ADDED!
-*   Add PlayerDeoppedEvent - When a player has OP removed. - ADDED!
-*   Add custom world generator support, allowing plugins to add their own.
 *   Clean up plugin loading code, Really unstable and hacky
 *   General housekeeping, clean up code and fix any known bugs.
 *   Release version 2.0! Whoop
