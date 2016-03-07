@@ -6,12 +6,12 @@
 
     <groupId>com.mojang.minecraft</groupId>
     <artifactId>HoseCraft</artifactId>
-    <version>0.1</version>
+    <version>1.1</version>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <defaultGoal>clean package</defaultGoal>
         <directory>target</directory>
-        <finalName>${project.artifactId}-${project.version}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
