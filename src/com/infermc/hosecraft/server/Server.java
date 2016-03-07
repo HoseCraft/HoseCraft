@@ -1,6 +1,8 @@
 package com.infermc.hosecraft.server;
 
 import com.infermc.hosecraft.command.CommandRegistry;
+import com.infermc.hosecraft.events.player.PlayerBannedEvent;
+import com.infermc.hosecraft.events.player.PlayerKickEvent;
 import com.infermc.hosecraft.logging.ServerLogger;
 import com.infermc.hosecraft.permissions.PermissionProvider;
 import com.infermc.hosecraft.plugins.PluginManager;
@@ -123,6 +125,11 @@ public class Server {
     }
 
     public boolean ban(String name, String reason) {
+        PlayerBannedEvent ev = new PlayerBannedEvent(this.getPlayer(name), reason);
+        this.getPluginManager().callEvent(ev);
+        if (ev.isCancelled()) return false;
+        reason = ev.getReason();
+
         return MC.ban(name, reason);
     }
 
@@ -131,7 +138,7 @@ public class Server {
     }
 
     public boolean kick(String name) {
-        return MC.kick(name, null);
+        return this.kick(name, null);
     }
 
     public boolean kick(Player p, String reason) {
@@ -139,6 +146,11 @@ public class Server {
     }
 
     public boolean kick(String name, String reason) {
+        PlayerKickEvent ev = new PlayerKickEvent(this.getPlayer(name), reason);
+        this.getPluginManager().callEvent(ev);
+        if (ev.isCancelled()) return false;
+        reason = ev.getReason();
+
         return MC.kick(name, reason);
     }
 }

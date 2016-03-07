@@ -597,11 +597,6 @@ public class MinecraftServer implements Runnable {
         boolean var2 = false;
         Iterator var3 = this.n.iterator();
 
-        PlayerKickEvent ev = new PlayerKickEvent(this.HoseCraft.getPlayer(var1), reason);
-        this.HoseCraft.getPluginManager().callEvent(ev);
-        if (ev.isCancelled()) return false;
-        reason = ev.getReason();
-
         while (var3.hasNext()) {
             HandleClient var4;
             if ((var4 = (HandleClient) var3.next()).b.equalsIgnoreCase(var1)) {
