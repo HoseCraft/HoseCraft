@@ -37,9 +37,9 @@ Each time we hit a major version, which can only be done officially, contributo
 
 Due to the project being in its infancy stages (As of writing, about 4-5 days old) theres a lot of stuff we plan to do. There's also a fair bit to get done.
 
-*   Add PlayerBannedEvent - When the player is banned and kicked (Doesnt fire Quit but does fire Kick with ban reason)
-*   Add PlayerOppedEvent - When a player is given OP
-*   Add PlayerDeoppedEvent - When a player has OP removed.
+*   Add PlayerBannedEvent - When the player is banned and kicked (Doesnt fire Quit but does fire Kick with ban reason) ADDED!
+*   Add PlayerOppedEvent - When a player is given OP - ADDED!
+*   Add PlayerDeoppedEvent - When a player has OP removed. - ADDED!
 *   Add custom world generator support, allowing plugins to add their own.
 *   Clean up plugin loading code, Really unstable and hacky
 *   General housekeeping, clean up code and fix any known bugs.
