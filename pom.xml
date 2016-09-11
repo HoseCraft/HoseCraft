@@ -10,10 +10,10 @@
     <packaging>jar</packaging>
 
     <distributionManagement>
-        <snapshotRepository>
+        <repository>
             <id>nexus</id>
             <url>http://build.thomas-edwards.me:8081/content/repositories/snapshots/</url>
-        </snapshotRepository>
+        </repository>
     </distributionManagement>
 
     <build>
