@@ -7,7 +7,7 @@
     <groupId>com.mojang.minecraft</groupId>
     <artifactId>HoseCraft</artifactId>
     <version>1.2.1</version>
-
+    <packaging>jar</packaging>
 
     <distributionManagement>
         <snapshotRepository>
