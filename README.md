@@ -1,4 +1,4 @@
-# HoseCraft [![Build Status](http://creativebuild.co:8080/buildStatus/icon?job=HoseCraft)](http://creativebuild.co:8080/job/HoseCraft/)
+# HoseCraft [![Build Status](https://hub.thomas-edwards.me/jenkins/job/HoseCraft/badge/icon)](https://hub.thomas-edwards.me/jenkins/job/HoseCraft)
 
 ### The newest kid on the block.
 
@@ -69,6 +69,7 @@ The API is ever changing currently and as a result JavaDocs will not be provided
 Finally, HoseCraft can now be added to your pom file pain free.
 You'll be wanting the following lines:
 
+```xml
 <repositories>
     <repository>
         <id>nexus</id>
@@ -83,3 +84,4 @@ You'll be wanting the following lines:
         <scope>provided</scope>
     </dependency>
 </dependencies>
+```
