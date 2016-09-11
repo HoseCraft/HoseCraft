@@ -64,3 +64,22 @@ As mentioned a few hundred times above, HoseCraft has a plugin API. For the most
 The API although similar has large differences in how it handles different things, for example commands use a command registry instead of defining them in the plugin.yml and using a method.
 
 The API is ever changing currently and as a result JavaDocs will not be provided. Feel free to generate them yourself from the source. Creating a plugin is very similar to Bukkit in needing a plugin.yml file. Use a server Jar as the library when developing your plugin.
+
+## Maven
+Finally, HoseCraft can now be added to your pom file pain free.
+You'll be wanting the following lines:
+
+<repositories>
+    <repository>
+        <id>nexus</id>
+        <url>https://hub.thomas-edwards.me/nexus/content/repositories/snapshots/</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>com.infermc.hosecraft</groupId>
+        <artifactId>HoseCraft</artifactId>
+        <version>1.2.1-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
