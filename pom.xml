@@ -12,7 +12,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>nexus</id>
-            <url>http://build.thomas-edwards.me:8081/nexus/content/repositories/snapshots/</url>
+            <url>https://hub.thomas-edwards.me/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
