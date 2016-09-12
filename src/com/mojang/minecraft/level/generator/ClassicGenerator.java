@@ -99,7 +99,7 @@ public final class ClassicGenerator extends LevelGenerator {
         int var28;
         for (var24 = 0; var24 < var46; ++var24) {
             if (var24 % 4 == 0) {
-                server.a(Integer.toString(var24 * 100 / (this.width - 1)));
+                //server.a(Integer.toString(var24 * 100 / (this.width - 1)));
             }
 
             for (var11 = 0; var11 < var48; ++var11) {
@@ -142,7 +142,7 @@ public final class ClassicGenerator extends LevelGenerator {
 
         for (var11 = 0; var11 < var24; ++var11) {
             if (var11 % 4 == 0) {
-                server.a(Integer.toString(var11 * 100 / (var24 - 1) / 4));
+                //server.a(Integer.toString(var11 * 100 / (var24 - 1) / 4));
             }
             float var55 = this.random.nextFloat() * var48;
             float var59 = this.random.nextFloat() * var54;
@@ -200,7 +200,7 @@ public final class ClassicGenerator extends LevelGenerator {
         populateOre(Block.GOLD_ORE.id, 50, 3, 4);
         server.a("Watering..");
         var51 = Block.STATIONARY_WATER.id;
-        server.a(Integer.toString(0));
+        //server.a(Integer.toString(0));
 
         for (var54 = 0; var54 < this.width; ++var54) {
             this.flood(var54, this.height / 2 - 1, 0, var51);
@@ -216,7 +216,7 @@ public final class ClassicGenerator extends LevelGenerator {
 
         for (var24 = 0; var24 < var54; ++var24) {
             if (var24 % 100 == 0) {
-                server.a(Integer.toString(var24 * 100 / (var54 - 1)));
+                //server.a(Integer.toString(var24 * 100 / (var54 - 1)));
             }
 
             var11 = this.random.nextInt(this.width);
@@ -233,7 +233,7 @@ public final class ClassicGenerator extends LevelGenerator {
 
         for (var48 = 0; var48 < var46; ++var48) {
             if (var48 % 100 == 0) {
-                server.a(Integer.toString((var48 * 100 / (var46 - 1))));
+                //server.a(Integer.toString((var48 * 100 / (var46 - 1))));
             }
 
             var51 = this.random.nextInt(this.width);
@@ -244,7 +244,7 @@ public final class ClassicGenerator extends LevelGenerator {
             }
         }
 
-        server.a(Integer.toString(100));
+        //server.a(Integer.toString(100));
         server.a("Growing..");
         var42 = var9;
         var46 = this.width;
