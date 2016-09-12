@@ -15,7 +15,7 @@ public class JavaPlugin implements Plugin {
     public JavaPlugin() {
         ClassLoader classLoader = getClass().getClassLoader();
         if (!(classLoader instanceof PluginLoader)) {
-            throw new IllegalStateException("JavaPlugin requires " + PluginLoader.class.getName() + " but got " + classLoader.getClass().getName());
+            throw new IllegalStateException("JavaPlugin requires " + PluginLoader.class.getName() + " but got " + classLoader.getClass().getName()+", does the class extend JavaPlugin?");
         }
         ((PluginLoader) classLoader).initialize(this);
     }

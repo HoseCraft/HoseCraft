@@ -35,7 +35,7 @@ public class PluginLoader extends URLClassLoader {
             try {
                 pluginstream = jar.getInputStream(pluginFile);
             } catch (IOException e) {
-                serverInstance.getLogger().warning(e.getMessage());
+                serverInstance.getLogger().warning("IOException: "+e.getMessage());
                 return;
             }
 
@@ -51,13 +51,13 @@ public class PluginLoader extends URLClassLoader {
             this.name = name;
             this.server = serverInstance;
 
-            serverInstance.getLogger().info("Attemping to load " + name);
+            //serverInstance.getLogger().info("Attemping to load " + name);
 
             URLClassLoader child = null;
             try {
                 child = new URLClassLoader(new URL[]{file.toURL()}, this.getClass().getClassLoader());
             } catch (MalformedURLException e) {
-                serverInstance.getLogger().warning(e.getMessage());
+                serverInstance.getLogger().warning("MalformedURLException: "+e.getMessage());
                 return;
             }
 
@@ -86,6 +86,9 @@ public class PluginLoader extends URLClassLoader {
             } catch (InstantiationException e) {
                 throw e;
             } catch (IllegalAccessException e) {
+                server.getLogger().warning("Can't access the plugins constructor, is it public?");
+                throw e;
+            } catch (Exception e) {
                 throw e;
             }
         }

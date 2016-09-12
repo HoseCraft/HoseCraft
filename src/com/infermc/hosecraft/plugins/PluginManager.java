@@ -70,13 +70,14 @@ public class PluginManager {
                         if (getPlugin(pLoader.name) == null) {
                             try {
                                 pLoader.loadClass();
-                                //if (pLoader.plugin != null) {
+                                if (pLoader.plugin != null) {
+                                    serverInstance.getLogger().info("Loaded "+pLoader.name);
                                     list.add(pLoader.plugin);
                                     plugins.add(pLoader.plugin);
-                                //} else {
+                                } else {
                                     // This should be unreachable?
                                     serverInstance.getLogger().warning("Unable to load plugin");
-                                //}
+                                }
                             } catch (Throwable throwable) {
                                 serverInstance.getLogger().warning("Error loading plugin '"+pLoader.name+"' main class!");
                                 throwable.printStackTrace();
