@@ -227,7 +227,7 @@ public final class ClassicGenerator extends LevelGenerator {
             }
         }
 
-        server.a(Integer.toString(100));
+        //server.a(Integer.toString(100));
         server.a("Melting..");
         var46 = this.width * this.depth * this.height / 20000;
 
@@ -406,7 +406,7 @@ public final class ClassicGenerator extends LevelGenerator {
         int var7 = var4 * var5 * var6 / 256 / 64 * var2 / 100;
 
         for (int var8 = 0; var8 < var7; ++var8) {
-            server.a(Integer.toString(var8 * 100 / (var7 - 1) / 4 + var3 * 100 / 4));
+            //server.a(Integer.toString(var8 * 100 / (var7 - 1) / 4 + var3 * 100 / 4));
             float var9 = random.nextFloat() * var4;
             float var10 = random.nextFloat() * var6;
             float var11 = random.nextFloat() * var5;

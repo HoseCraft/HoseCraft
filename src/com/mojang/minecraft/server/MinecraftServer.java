@@ -766,6 +766,8 @@ public class MinecraftServer implements Runnable {
                 LevelGenerator levelGenerator = var1.HoseCraft.getLevelGenerator(var1.worldGenerator);
                 if (levelGenerator == null) {
                     a.severe("Unable to load level generator '"+var1.worldGenerator+"'");
+                } else {
+                    a.warning("Using level generator '"+ var1.worldGenerator+"'");
                 }
                 var1.c = levelGenerator.generate("--", 256, 256, 64);
             }
