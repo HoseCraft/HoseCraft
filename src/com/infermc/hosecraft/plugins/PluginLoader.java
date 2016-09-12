@@ -19,7 +19,7 @@ public class PluginLoader extends URLClassLoader {
     private Server server;
     private Class main;
 
-    public PluginLoader(ClassLoader parent, Server serverInstance, File file) throws MalformedURLException {
+    public PluginLoader(ClassLoader parent, Server serverInstance, File file) throws Exception {
         super(new URL[]{file.toURI().toURL()}, parent);
         JarFile jar;
         try {

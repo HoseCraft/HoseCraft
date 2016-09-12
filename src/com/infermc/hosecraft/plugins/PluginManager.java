@@ -29,8 +29,18 @@ public class PluginManager {
     }
 
     public Plugin getPlugin(String name) {
-        for (Plugin pl : plugins) {
-            if (pl.getName().equalsIgnoreCase(name)) return pl;
+        if (plugins.size() > 0) {
+            for (Plugin pl : plugins) {
+                if (pl == null) {
+                    serverInstance.getLogger().warning("A null plugin got into the list?");
+                    return null;
+                }
+                if (pl.getName() != null) {
+                    if (pl.getName().equalsIgnoreCase(name)) return pl;
+                } else {
+                    serverInstance.getLogger().warning(pl.toString() + " is null?");
+                }
+            }
         }
         return null;
     }
@@ -56,11 +66,17 @@ public class PluginManager {
                 for (File f : directory.listFiles()) {
                     PluginLoader pLoader = loadPlugin(f);
                     if (pLoader != null) {
+                        // Does a plugin with the same name exist?
                         if (getPlugin(pLoader.name) == null) {
                             try {
                                 pLoader.loadClass();
-                                list.add(pLoader.plugin);
-                                plugins.add(pLoader.plugin);
+                                //if (pLoader.plugin != null) {
+                                    list.add(pLoader.plugin);
+                                    plugins.add(pLoader.plugin);
+                                //} else {
+                                    // This should be unreachable?
+                                    serverInstance.getLogger().warning("Unable to load plugin");
+                                //}
                             } catch (Throwable throwable) {
                                 serverInstance.getLogger().warning("Error loading plugin '"+pLoader.name+"' main class!");
                                 throwable.printStackTrace();
@@ -82,7 +98,7 @@ public class PluginManager {
         PluginLoader loader = null;
         try {
             loader = new PluginLoader(this.getClass().getClassLoader(), serverInstance, file);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return loader;
