@@ -13,12 +13,13 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class PluginClassLoader extends URLClassLoader {
+public class PluginLoader extends URLClassLoader {
     public JavaPlugin plugin;
-    private String name;
+    public String name;
     private Server server;
+    private Class main;
 
-    public PluginClassLoader(ClassLoader parent, Server serverInstance, File file) throws MalformedURLException {
+    public PluginLoader(ClassLoader parent, Server serverInstance, File file) throws MalformedURLException {
         super(new URL[]{file.toURI().toURL()}, parent);
         JarFile jar;
         try {
@@ -59,24 +60,14 @@ public class PluginClassLoader extends URLClassLoader {
                 serverInstance.getLogger().warning(e.getMessage());
                 return;
             }
-            Class classToLoad = null;
+
             try {
-                classToLoad = Class.forName(mainClass, true, this);
+                main = Class.forName(mainClass, true, this);
             } catch (ClassNotFoundException e) {
                 //e.printStackTrace();
-                serverInstance.getLogger().warning(e.getMessage());
+                serverInstance.getLogger().warning("Plugin main class not found: "+e.getMessage());
                 return;
             }
-            JavaPlugin pl = null;
-            // As soon as a new instance is called the plugin is alive!!
-            try {
-                pl = (JavaPlugin) classToLoad.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            this.plugin = pl;
         } else {
             serverInstance.getLogger().warning("Missing plugin.yml in " + file.getName());
             return;
@@ -85,5 +76,18 @@ public class PluginClassLoader extends URLClassLoader {
 
     public void initialize(JavaPlugin pl) {
         pl.init(this.name, this.server);
+    }
+
+    public void loadClass() throws Throwable {
+        // As soon as a new instance is called the plugin is alive!!
+        if (main != null) {
+            try {
+                this.plugin = (JavaPlugin) main.newInstance();
+            } catch (InstantiationException e) {
+                throw e;
+            } catch (IllegalAccessException e) {
+                throw e;
+            }
+        }
     }
 }

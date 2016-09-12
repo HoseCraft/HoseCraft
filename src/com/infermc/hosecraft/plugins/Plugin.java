@@ -22,5 +22,5 @@ public interface Plugin {
 
     boolean isEnabled();
 
-    void setEnabled(boolean status) throws Exception;
+    void setEnabled(boolean status) throws Throwable;
 }

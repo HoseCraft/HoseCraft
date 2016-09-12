@@ -20,7 +20,11 @@ public class PluginCommand implements CommandInterface {
         List<Plugin> pluginList = server.getPluginManager().getPlugins();
         String cmd = "There are (" + pluginList.size() + ") loaded plugins: ";
         for (Plugin pl : pluginList) {
-            cmd = cmd + pl.getName() + " ";
+            if (pl.isEnabled()) {
+                cmd = cmd + "&a" + pl.getName() + " ";
+            } else {
+                cmd = cmd + "&c"+pl.getName() + " ";
+            }
         }
         source.sendMessage(cmd.trim());
         return true;

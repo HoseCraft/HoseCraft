@@ -14,10 +14,10 @@ public class JavaPlugin implements Plugin {
 
     public JavaPlugin() {
         ClassLoader classLoader = getClass().getClassLoader();
-        if (!(classLoader instanceof PluginClassLoader)) {
-            throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " but got " + classLoader.getClass().getName());
+        if (!(classLoader instanceof PluginLoader)) {
+            throw new IllegalStateException("JavaPlugin requires " + PluginLoader.class.getName() + " but got " + classLoader.getClass().getName());
         }
-        ((PluginClassLoader) classLoader).initialize(this);
+        ((PluginLoader) classLoader).initialize(this);
     }
 
     public String getName() {
@@ -40,22 +40,13 @@ public class JavaPlugin implements Plugin {
         return this.enabled;
     }
 
-    public void setEnabled(boolean status) throws Exception {
+    public void setEnabled(boolean status) throws Throwable {
         if (status) {
-            try {
-                onEnable();
-                this.enabled = status;
-            } catch (Exception e) {
-                serverinstance.getLogger().warning("Error enabling.");
-            }
+            if (!this.enabled) onEnable();
         } else {
-            try {
-                onDisable();
-                this.enabled = status;
-            } catch (Exception e) {
-                serverinstance.getLogger().warning("Error enabling.");
-            }
+            if (this.enabled) onDisable();
         }
+        this.enabled = status;
     }
 
     // Stuff that plugins can override

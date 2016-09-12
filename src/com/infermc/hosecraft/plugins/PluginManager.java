@@ -30,9 +30,7 @@ public class PluginManager {
 
     public Plugin getPlugin(String name) {
         for (Plugin pl : plugins) {
-            if (pl.getName().equalsIgnoreCase(name)) {
-                return pl;
-            }
+            if (pl.getName().equalsIgnoreCase(name)) return pl;
         }
         return null;
     }
@@ -47,18 +45,29 @@ public class PluginManager {
     }
 
     public void unloadPlugin(Plugin plClass) {
-
+        // This isn't a thing yes :(
     }
 
     public List<Plugin> loadPlugins(File directory) throws FileNotFoundException {
         ArrayList<Plugin> list = new ArrayList<Plugin>();
+
         if (directory.exists()) {
             if (directory.isDirectory()) {
                 for (File f : directory.listFiles()) {
-                    Plugin pl = loadPlugin(f);
-                    if (pl != null) {
-                        list.add(pl);
-                        plugins.add(pl);
+                    PluginLoader pLoader = loadPlugin(f);
+                    if (pLoader != null) {
+                        if (getPlugin(pLoader.name) == null) {
+                            try {
+                                pLoader.loadClass();
+                                list.add(pLoader.plugin);
+                                plugins.add(pLoader.plugin);
+                            } catch (Throwable throwable) {
+                                serverInstance.getLogger().warning("Error loading plugin '"+pLoader.name+"' main class!");
+                                throwable.printStackTrace();
+                            }
+                        } else {
+                            serverInstance.getLogger().warning("A plugin already exists with the name '"+pLoader.name+"', skipping.");
+                        }
                     }
                 }
                 return list;
@@ -69,14 +78,14 @@ public class PluginManager {
         return list;
     }
 
-    public Plugin loadPlugin(File file) {
-        PluginClassLoader loader = null;
+    public PluginLoader loadPlugin(File file) {
+        PluginLoader loader = null;
         try {
-            loader = new PluginClassLoader(this.getClass().getClassLoader(), serverInstance, file);
+            loader = new PluginLoader(this.getClass().getClassLoader(), serverInstance, file);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return loader.plugin;
+        return loader;
     }
 
     public static List<Method> getMethodsAnnotatedWith(final Class<?> type, final Class<? extends Annotation> annotation) {
