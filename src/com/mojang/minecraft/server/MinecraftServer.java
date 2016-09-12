@@ -82,7 +82,7 @@ public class MinecraftServer implements Runnable {
             this.f = Boolean.parseBoolean(this.q.getProperty("admin-slot", "false"));
             this.worldName = this.q.getProperty("world-name", "world");
             this.worldGenerator = this.q.getProperty("world-generator", "ClassicGenerator");
-            this.heartbeatURL = this.q.getProperty("heartbeat", "http://www.minecraft.net/heartbeat.jsp");
+            this.heartbeatURL = this.q.getProperty("heartbeat", "http://www.classicube.net/heartbeat.jsp");
             if (this.p < 1) {
                 this.p = 1;
             }

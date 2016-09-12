@@ -27,7 +27,7 @@ public class Server {
     private PermissionProvider permissionProvider = new PermissionProvider();
     private CommandRegistry commandRegistry = new CommandRegistry(this);
 
-    public Double version;
+    public String version;
     public String flavour;
 
     public Server(MinecraftServer instance) {
@@ -37,11 +37,10 @@ public class Server {
         // Load hosecraft stuff
         InputStream input = getClass().getResourceAsStream("/hosecraft.yml");
         YamlConfiguration hosecraft = new YamlConfiguration();
-        if (input != null) {
-            hosecraft.load(input);
-        }
+
+        if (input != null) hosecraft.load(input);
         ConfigSection section = hosecraft.getRoot();
-        this.version = (Double) section.get("version", 0.0);
+        this.version = section.getString("version", "0.0");
         this.flavour = section.getString("flavour", "MISSINGNO");
 
         // Add some internal level generators.
@@ -61,7 +60,7 @@ public class Server {
         return log;
     }
 
-    public Double getVersion() {
+    public String getVersion() {
         return this.version;
     }
 
