@@ -196,21 +196,29 @@ public class MinecraftServer implements Runnable {
         int var1 = 50000000;
         int var2 = 500000000;
 
-        // Started? Enable plugins.
-        a.info("Enabling plugins...");
-        if (HoseCraft.getPluginManager().getPlugins().size() > 0) {
-            for (Plugin pl : HoseCraft.getPluginManager().getPlugins()) {
-                a.info("Enabling " + pl.getName() + "..");
-                pl.setEnabled(true);
-            }
-        }
 
         try {
+
             long var3 = System.nanoTime();
             long var5 = System.nanoTime();
             int var7 = 0;
 
             while (true) {
+                // Started? Enable plugins.
+                a.info("Enabling plugins...");
+                if (HoseCraft.getPluginManager().getPlugins().size() > 0) {
+                    for (Plugin pl : HoseCraft.getPluginManager().getPlugins()) {
+                        a.info("Enabling " + pl.getName() + "..");
+
+                        try {
+                            pl.setEnabled(true);
+                        } catch (Exception e1) {
+                            a.info("Error enabling "+ pl.getName() +"!");
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+
                 this.d();
 
                 for (; System.nanoTime() - var5 > (long) var1; ++var7) {

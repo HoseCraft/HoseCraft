@@ -61,4 +61,19 @@ public class ConfigSection {
         }
         return res;
     }
+
+    // Double
+    public Double getDouble(String path) {
+        String str =  get(path).toString();
+        if (str != null) return Double.parseDouble(str);
+        return null;
+    }
+
+    public Double getString(String path, Double def) {
+        Double res = getDouble(path);
+        if (res == null) {
+            return def;
+        }
+        return res;
+    }
 }

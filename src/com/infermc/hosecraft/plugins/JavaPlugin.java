@@ -40,12 +40,21 @@ public class JavaPlugin implements Plugin {
         return this.enabled;
     }
 
-    public void setEnabled(boolean status) {
-        this.enabled = status;
+    public void setEnabled(boolean status) throws Exception {
         if (status) {
-            onEnable();
+            try {
+                onEnable();
+                this.enabled = status;
+            } catch (Exception e) {
+                serverinstance.getLogger().warning("Error enabling.");
+            }
         } else {
-            onDisable();
+            try {
+                onDisable();
+                this.enabled = status;
+            } catch (Exception e) {
+                serverinstance.getLogger().warning("Error enabling.");
+            }
         }
     }
 
