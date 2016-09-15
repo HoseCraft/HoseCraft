@@ -1,6 +1,7 @@
 # HoseCraft [![Build Status](https://hub.thomas-edwards.me/jenkins/job/HoseCraft/badge/icon)](https://hub.thomas-edwards.me/jenkins/job/HoseCraft)
 
-### The newest kid on the block.
+### Totally not copying Bukkit and Spigots name and style!
+### We have a site now! http://hosecraft.github.io/HoseCraft/
 
 ## Introduction
 
