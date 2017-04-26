@@ -13,6 +13,49 @@ HoseCraft is a server software for Minecraft Classic with the bonus feature of a
 You read right, at the core of HoseCraft is the original Minecraft Classic server notch wrote many eons ago. With a lovingly crafted plugin API ontop.  
 An API with custom events and command support nonetheless!
 
+## Getting Started
+
+It's not too difficult to get your own HoseCraft server up and running in just a couple of minutes!
+You've three options open to you!
+
+### Option 1 - Download it, run it!
+The easiest option!
+* Navigate to our Jenkins at http://hub.thomas-edwards.me/jenkins/job/HoseCraft/ and download HoseCraft.jar
+* Make a folder somewhere and put HoseCraft.jar in
+* Open command prompt or terminal (depending on your operating system)
+* Run the command `java -jar HoseCraft.jar`
+* Done! Edit any files created to setup your server just how you like it!
+
+### Option 2 - Download the source, compile it, run it!
+You will need a git client and maven to do this!
+
+* Clone this repo onto your system using the command `git clone git@github.com:HoseCraft/HoseCraft.git`
+* Enter the HoseCraft directory and run `mvn package`
+* Kickback and relax, It'll only take a minute.
+* All done? Copy HoseCraft.jar out of the target directory and make a folder somewhere to put HoseCraft.jar in
+* Open command prompt or terminal (depending on your operating system)
+* Run the command `java -jar HoseCraft.jar`
+* Done! Edit any files created to setup your server just how you like it!
+
+### Option 3a - Download it from DockerHub
+By far the best option if you dont wish to install Java on your machine or just like to use docker for running services.
+* Open your terminal or PowerShell (Windows)
+* Run the command `docker pull hosecraft/hosecraft`
+* Docker will download a premade container with HoseCraft latest in.
+* Run the command `docker run -it hosecraft/hosecraft:latest`
+* All done! You can mount the data directory on your system to edit the settings for the server.
+
+*__Note:__ You may wish to get an older version or specific version of HoseCraft, HoseCrafts images are tagged by Jenkins Job numbers. You can get build 17 for example via `docker pull hosecraft/hosecraft:17`*
+
+### Option 3b - Download it from DockerHub using Kitematic
+Simplest option for people already using Kitematic!
+* Open Kitematic and enter "HoseCraft" into your search bar
+* Find HoseCraft by HoseCraft
+* Click create and wait while Kitematic does it for you.
+* All done! Kitematic handles the rest.
+
+*__Note:__ Enable your volume directory before you do any changes to yourself, failing to do so will result in your data being lost when the container is reset.*
+
 ## What will we do with HoseCraft and what will we not?
 
 We will be adding more and more to the API to give plugin creators full (yes, full) control over any aspect of the server as they desire. Giving them access to control players and blocks within the world through many different methods and events. We plan to setup an event for almost every thinkable thing.
